@@ -37,7 +37,25 @@ public class Card {
 	}
 	
 	// return String-representation of the Card-Type
+	@Override
 	public String toString() {
 		return suit + "-" + type;
+	}
+	
+	// check if two Cards are equal (have identical attribute values)/ are both cards
+	@Override 
+	public boolean equals(Object other) {
+		
+		if (other instanceof Card) {
+			return true; 
+		}
+		// cast Object other to Card and check if its attributes equal the Card it is compared to 
+		return this.suit == ((Card) other).suit && this.type == ((Card)other).type;
+	}
+	
+	// check if one Card matches another 
+	public boolean matches(Card othercard) {
+		/* TODO: add a return statement returning true if 
+		 * either suit values or type values or both are identical */
 	}
 }
