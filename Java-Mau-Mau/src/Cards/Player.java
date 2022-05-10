@@ -9,5 +9,8 @@ package Cards;
  */
 
 public class Player {
+	
+	String playerName; 
+	CardStack hand; 
 
 }
