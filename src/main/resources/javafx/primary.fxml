@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  @version 0.0.1
+  @comment JavaFX-Example, will be removed in future
+
+  @documentation https://openjfx.io/
+-->
+
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
