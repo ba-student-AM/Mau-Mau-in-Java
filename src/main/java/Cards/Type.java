@@ -3,7 +3,7 @@ package Cards;
 /**
  * @author Arved Meyer
  * @author Tobias Hering
- * @version 2.1.0
+ * @version 3.0.0
  * @comment Enum to model the possible Types of Skat-Cards 
  * 
  * @documentation https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
@@ -11,19 +11,14 @@ package Cards;
  */
 
 public enum Type {
-  ACE,
-  // TWO,
-  // THREE,
-  // FOUR,
-  // FIVE,
-  // SIX,
-  // SEVEN,
-  EIGHT,
-  NINE,
-  TEN,
-  JACK,
-  QUEEN,
-  KING;
+  SIEBEN,
+  ACHT,
+  NEUN,
+  ZEHN, 
+  ASS,
+  OBER,
+  KOENIG,
+  UNTER;
 	
 	/* Access all the Values of the Enum from an Array via a getter-Method
 	 * No Setter needed, as Enum-Values cannot be changed at runtime */
