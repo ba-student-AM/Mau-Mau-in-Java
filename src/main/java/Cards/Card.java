@@ -1,7 +1,4 @@
-package Cards.Cards;
-
-import Cards.Suit;
-import Cards.Type;
+package Cards;
 
 /**
  * @author Arved Meyer
