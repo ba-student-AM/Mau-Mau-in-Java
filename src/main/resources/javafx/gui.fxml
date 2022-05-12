@@ -32,6 +32,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
@@ -40,9 +41,8 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -53,15 +53,15 @@
       <menus>
         <Menu mnemonicParsing="false" text="Spiel">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#buttonExit" text="Neues Spiel" />
+            <MenuItem fx:id="menuNewGame" mnemonicParsing="false" onAction="#handleNewGame" text="Neues Spiel" />
                   <Menu disable="true" mnemonicParsing="false" text="Spielstände">
                     <items>
-                  <MenuItem mnemonicParsing="false" text="Speichern" />
-                        <MenuItem mnemonicParsing="false" text="Laden" />
+                  <MenuItem fx:id="menuSaveGame" mnemonicParsing="false" text="Speichern" />
+                        <MenuItem fx:id="menuLoadGame" mnemonicParsing="false" text="Laden" />
                     </items>
                   </Menu>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#buttonExit" text="Schließen" />
+            <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#handleExit" text="Schließen" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Einstellungen">
@@ -82,32 +82,90 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Hilfe / Über / ...">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#buttonAbout" text="Über das Programm" />
+            <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#handleAbout" text="Über das Programm" />
+                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test..." />
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <VBox>
          <children>
-            <HBox alignment="CENTER" layoutY="200.0" prefHeight="175.0" prefWidth="667.0" spacing="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <HBox>
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <VBox>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spielstatistiken">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler x ist an der Reihe..." wrappingWidth="137.61328125">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <Button fx:id="btnNextPlayer" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Nächster Spieler" />
+                        <Text fx:id="timer" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: 00:00:11" wrappingWidth="102.2734375" />
+                     </children>
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <ImageView fx:id="currentCard" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-8C.svg.png" />
+                        <Image url="@../card_img/1024px-AH.svg.png" />
+                     </image>
+                  </ImageView>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <ImageView fx:id="deckCards" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../card_img/1024px-Card_back_03.svg.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="handCards" alignment="BOTTOM_CENTER" prefHeight="175.0" prefWidth="667.0" spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../card_img/1024px-7C.svg.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-8D.svg.png" />
+                        <Image url="@../card_img/1024px-7D.svg.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../card_img/1024px-7H.svg.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../card_img/1024px-7S.svg.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../card_img/1024px-AD.svg.png" />
                      </image>
@@ -115,25 +173,9 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-JC.svg.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../card_img/1024px-KH.svg.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../card_img/1024px-QD.svg.png" />
+                        <Image url="@../card_img/1024px-AS.svg.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -141,28 +183,13 @@
                   </ImageView>
                </children>
             </HBox>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="648.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../card_img/1024px-Card_back_03.svg.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="329.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../card_img/1024px-QD.svg.png" />
-               </image>
-            </ImageView>
-            <Pane layoutX="8.0" layoutY="5.0" prefHeight="198.0" prefWidth="200.0">
-               <children>
-                  <Text layoutX="15.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler x ist an der Reihe..." wrappingWidth="137.61328125" />
-                  <Button layoutX="15.0" layoutY="84.0" mnemonicParsing="false" text="Nächster Spieler" />
-                  <Text fx:id="timer" layoutX="16.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: 00:00:11" wrappingWidth="102.2734375" />
-                  <Text layoutX="15.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielstatistiken">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-         </children></AnchorPane>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
   </children>
 </VBox>

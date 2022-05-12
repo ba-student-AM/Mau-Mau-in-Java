@@ -26,11 +26,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // scene = new Scene(loadFXML("gui"), 640, 480);
         scene = new Scene(loadFXML("gui"));
-        stage.setResizable(false);
         stage.setScene(scene);
+
+        // always show the whole stage
+        stage.sizeToScene();
+        stage.setResizable(false);
         stage.show();
+        stage.setMinWidth(stage.getWidth());
+        stage.setMinHeight(stage.getHeight());
     }
 
     static void setRoot(String fxml) throws IOException {

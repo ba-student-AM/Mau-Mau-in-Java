@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 public class MainController {
 
   // (re)start the game
-  @FXML private void buttonNewGame() throws IOException {
+  @FXML private void handleNewGame() throws IOException {
     // TODO: function to start a new game (in NewGame window?)
     // TODO: if running: ask if you want to start a new game / save the current game
     // needed: boolean to check if game is running
@@ -22,17 +22,21 @@ public class MainController {
   }
 
   // close the application
-  @FXML private void buttonExit() throws IOException {
+  @FXML private void handleExit() throws IOException {
     System.exit(0);
   }
 
   // show the about dialog
-  @FXML private void buttonAbout() throws IOException {
+  @FXML private void handleAbout() throws IOException {
     // TODO: make an about scene
     App.setRoot("About");
   }
 
-  @FXML private void buttonNextPlayer() throws IOException {
+  @FXML private void handleBtnNextPlayer() throws IOException {
     // TODO: function to switch to next player
+  }
+
+  @FXML private void handleMenuTest() throws IOException {
+    System.out.println("test");
   }
 }
