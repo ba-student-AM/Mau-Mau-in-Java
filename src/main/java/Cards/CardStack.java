@@ -1,13 +1,14 @@
 package Cards;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Arved Meyer
- * @version 0.3.0
- * 
- * Class to Model a STACK of CARDS 
+ * @author Tobias Hering
+ * @version 1.0.0
+ * @comment Class to Model a STACK of CARDS 
  */
 
 public class CardStack {
@@ -42,6 +43,11 @@ public class CardStack {
 		cards.add(card);
 	}
 	
+	// Method to remove a card from our Stack 
+	void removeCard(Card card) {
+		cards.remove(card); 
+	}
+
 	// Method to get our Cards 
 	public List<Card> getCards() {
 		return cards;
@@ -49,40 +55,50 @@ public class CardStack {
 	
 	// Method to empty our Stack 
 	static CardStack empty() {
-		// TODO: return an empty Stack of Cards 
+		CardStack newDeck = new CardStack();
+		return newDeck;
+	}
+
+	// Method to clear our existing Stack
+	public void clear() {
+		cards.clear();
 	}
 	
 	// Method to shuffle our cards 
 	public void shuffle() {
-		// TODO: shuffle our cards
+		Collections.shuffle(cards);
 	}
 	
 	// Method to check if our stack is empty 
 	public boolean isEmpty() {
-		// TODO: Check if cards is empty and return boolean value 
+		return (size() == 0) ? true : false;
 	}
 	
 	// Method to get the size of our stack 
 	public int size() {
-		// TODO: get the number of cards and return them as an int 
-	}
-	
-	// Method to remove a card from our Stack 
-	void removeCard(Card card) {
-		// TODO: remove card from cards 
+		return cards.size();
 	}
 	
 	// Method to look through our stack for 
-	Card getMatchingCard(Card card) {
-		/* TODO: look through our cards for a card MATCHING our card, 
-		 * if success, return the matching card, else return null */
+	Card getMatchingCard(Card checkcard) {
+		for (Card card : cards) {
+			if (card.matches(checkcard)) {
+				return card;
+			}
+		}
+
+		return null;
 	}
 	
 	// Method to create a String-representation of our Stack 
 	@Override
 	public String toString() {
-		// TODO: turn our cards into a String-representation 
-		// Look at how it is done with collections 
-	}
+		String cardStackString = "";
 
+		for (Card card : cards) {
+			cardStackString += card.toString() + "\n";
+		}
+
+		return cardStackString;
+	}
 }
