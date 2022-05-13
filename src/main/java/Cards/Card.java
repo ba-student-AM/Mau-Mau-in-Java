@@ -2,7 +2,8 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.3.0
+ * @author Tobias Hering
+ * @version 1.0.0
  * 
  * Class to Model Cards of the german Skat-Deck 
  * 
@@ -10,25 +11,19 @@ package Cards;
 
 public class Card {
 	
-	/* TODO: 
-	 * - Finish TODO-Segments and Enum Suit
-	 * - Increment  Version to 1.0.0
-	 * - !!! When finished, remove this massive comment and push to Git-Hub
-	 * */
-	
 	// Each card has a unique combination of Suit and Type 
 	private final Suit suit;
 	private final Type type;
 	
 	// Constructor for class Card 
 	public Card(final Suit suit, final Type type) {
-		// TODO: Create assignment of suit to suit here !!!
+		this.suit = suit; 
 		this.type = type; 
 	}
 	
 	// getter-method for suit 
 	public Suit getSuit() {
-		// TODO: Create return-statement for this getter-method 
+		return this.suit;
 	}
 	
 	// getter-method for type
@@ -55,8 +50,11 @@ public class Card {
 	
 	// check if one Card matches another 
 	public boolean matches(Card othercard) {
-		/* TODO: add a return statement returning true if 
-		 * either suit values or type values or both are identical */
-    return false;
+
+		if (othercard instanceof Card) {
+			return true; 
+		}
+
+		return this.suit == othercard.suit || this.type == othercard.type;
 	}
 }
