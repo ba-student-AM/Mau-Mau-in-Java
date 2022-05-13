@@ -42,6 +42,11 @@ public class CardStack {
 	public void addCard(Card card) {
 		cards.add(card);
 	}
+
+	// Method to get to uppermost Card in the Stack
+	public Card getTopCard() {
+		return cards.get(cards.size() - 1);
+	}
 	
 	// Method to remove a card from our Stack 
 	void removeCard(Card card) {
