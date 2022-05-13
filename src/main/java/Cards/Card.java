@@ -4,9 +4,7 @@ package Cards;
  * @author Arved Meyer
  * @author Tobias Hering
  * @version 1.0.0
- * 
- * Class to Model Cards of the german Skat-Deck 
- * 
+ * @comment Class to Model Cards of the german Skat-Deck
  */
 
 public class Card {
