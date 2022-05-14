@@ -50,7 +50,7 @@ public class CardStack {
 	
 	// Method to remove a card from our Stack 
 	void removeCard(Card card) {
-		cards.remove(card); 
+		this.cards.remove(card); 
 	}
 
 	// Method to get our Cards 

@@ -48,14 +48,10 @@ public class Player {
         return card;
     }
 
-    public boolean hasMatchingCardTo(CardStack stack) {
-        for (Card card : hand.getCards()) {
-            if (stack.getTopCard().matches(card)) {
-                matchingCard = card;
-                return matchingCard != null;
-            }
-        }
-        return false;
+    // 
+    public boolean hasMatchingCardTo(Card card) {
+        this.matchingCard = hand.getMatchingCard(card);
+        return this.matchingCard != null; 
     }
 
 }
