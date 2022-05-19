@@ -11,9 +11,15 @@ import java.util.List;
 
 public class Game {
 	
+	public final int NUM_INITIAL_CARDS = 5; 
+	
 	private List<Player> players; 
 	private Player currentPlayer; 
-	private CardStack mainStack; 
+	private CardStack mainStack;
+	
+	private Suit validSuit;
+	private Type validType; 
+	
 	// Constructor
 	Game () {
 		players = new ArrayList<>();
@@ -28,5 +34,16 @@ public class Game {
 	private void createMainStack() {
 		// TODO: Create our mainStack via initDeck and then shuffle it 
 	}
+	// Method to start our game; 
+	public void startGame(Game game) {
+		createMainStack();
+		this.createPlayerHands(); 
+		
+	}
 
+	// Method to give out Cards to players 
+	public void createPlayerHands() {
+		// TODO: iterate through players and add NUM_INITIAL_CARDS to their hand from mainStack 
+		// Use both forEach and traditional for-loop 
+	}
 }

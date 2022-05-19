@@ -49,7 +49,7 @@ public class Player {
     }
 
     // 
-    public boolean hasMatchingCardTo(Card card) {
+    public boolean hasCardMatching(Card card) {
         this.matchingCard = hand.getMatchingCard(card);
         return this.matchingCard != null; 
     }
