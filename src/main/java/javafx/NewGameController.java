@@ -8,6 +8,8 @@
 
 package javafx;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
@@ -70,6 +72,11 @@ public class NewGameController {
 
         System.out.println(players.length);
         button_startGame.setDisable(true);
+    }
+
+    @FXML
+    public void abort() throws IOException {
+        App.setRoot("gui");
     }
 
     //enable button only when >= 2 textfields are filled
