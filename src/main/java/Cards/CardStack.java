@@ -2,12 +2,13 @@ package Cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Arved Meyer
  * @author Tobias Hering
- * @version 1.0.0
+ * @version 1.1.0
  * @comment Class to Model a STACK of CARDS 
  */
 
@@ -103,7 +104,17 @@ public class CardStack {
 		for (Card card : cards) {
 			cardStackString += card.toString() + "\n";
 		}
-
 		return cardStackString;
+	}
+	
+	// Method to transfer all cards from one CardStack to another
+	public void moveAllCards(CardStack targetStack) {
+		
+		Iterator<Card> itr = cards.iterator();
+		while(itr.hasNext()) {
+			Card card = itr.next();
+			itr.remove();
+			targetStack.addCard(card);
+		}
 	}
 }
