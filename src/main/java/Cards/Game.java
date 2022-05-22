@@ -2,7 +2,7 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.3.0
+ * @version 0.3.1
  * @comment Class to Model the logic of a game of Mau-Mau 
  */
 
@@ -45,7 +45,7 @@ public class Game {
 
 	// Method to give out Cards to players 
 	public void createPlayerHands() {
-		// TODO: iterate through players and add NUM_INITIAL_CARDS to their hand from mainStack 
+		// TODO: iterate through players and add NUM_INITIAL_CARDS to their hand from drawStack 
 		// Use both forEach and traditional for-loop 
 	}
 	
@@ -55,8 +55,17 @@ public class Game {
 	}
 	
 	// Getter for current topCard
-	
 	public Card getTopCard() {
 		return topCard; 
+	}
+	
+	// Method to get our winner 
+	private Player getWinningPlayer() {
+		// TODO: Iterate through players and check if their hand is empty. If yes, return them. 
+	}
+	
+	// Method to end our game 
+	private void gameEnds() {
+		// TODO: Get our winning player, ... 
 	}
 }
