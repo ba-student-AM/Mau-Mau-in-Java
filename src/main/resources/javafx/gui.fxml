@@ -114,13 +114,13 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="currentCard" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-AH.svg.png" />
+                        <Image url="@../card_img/standard_blatt/HERZEN-ASS.png" />
                      </image>
                   </ImageView>
                   <Region HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="deckCards" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-Card_back_03.svg.png" />
+                        <Image url="@../card_img/standard_blatt/1024px-Card_back_03.svg.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
@@ -133,49 +133,49 @@
             </HBox>
             <HBox fx:id="handCards" alignment="BOTTOM_CENTER" prefHeight="175.0" prefWidth="667.0" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-7C.svg.png" />
+                        <Image url="@../card_img/standard_blatt/EICHELN-SIEBEN.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_1" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-7D.svg.png" />
+                        <Image url="@../card_img/standard_blatt/SCHELLEN-SIEBEN.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_2" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-7H.svg.png" />
+                        <Image url="@../card_img/standard_blatt/HERZEN-SIEBEN.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_3" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-7S.svg.png" />
+                        <Image url="@../card_img/standard_blatt/BLAETTER-SIEBEN.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_4" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-AD.svg.png" />
+                        <Image url="@../card_img/standard_blatt/SCHELLEN-ASS.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="handCard_5" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/1024px-AS.svg.png" />
+                        <Image url="@../card_img/standard_blatt/BLAETTER-ASS.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />

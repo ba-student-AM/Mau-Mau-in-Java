@@ -10,6 +10,8 @@ package javafx;
 
 import java.io.IOException;
 
+import Cards.Game;
+import Cards.Player;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
@@ -31,8 +33,10 @@ public class NewGameController {
     private int playerCount;
     private int i;
 
+    public String[] playerNames;
+
     @FXML
-    public void submit() {
+    public void submit() throws IOException {
         playerCount = 0;
         if (!textField_P1.getText().isEmpty()) {
             playerCount++;
@@ -69,10 +73,20 @@ public class NewGameController {
         for (String player : players) {
             System.out.println(player);
         }
+        playerNames = players;
+        for (String player : playerNames) {
+            System.out.println(player);
+        }
 
         System.out.println(players.length);
         button_startGame.setDisable(true);
+
+        Game game = new Game(players);
+        game.startGame(game);
+        App.setRoot("gui");
+        //MainController.initializeGUI(game); //TODO funktioniert nicht :)
     }
+
 
     @FXML
     public void abort() throws IOException {

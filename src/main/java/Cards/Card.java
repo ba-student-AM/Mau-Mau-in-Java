@@ -1,5 +1,7 @@
 package Cards;
 
+import java.io.File;
+
 /**
  * @author Arved Meyer
  * @author Tobias Hering
@@ -12,7 +14,9 @@ public class Card {
 	// Each card has a unique combination of Suit and Type 
 	private final Suit suit;
 	private final Type type;
-	
+
+	public String blatt = "standard_blatt";
+
 	// Constructor for class Card 
 	public Card(final Suit suit, final Type type) {
 		this.suit = suit; 
@@ -28,7 +32,15 @@ public class Card {
 	public Type getType() {
 		return this.type; 
 	}
-	
+
+	public String getBlatt() {
+		return blatt;
+	}
+
+	public void setBlatt(String blatt) {
+		this.blatt = blatt;
+	}
+
 	// return String-representation of the Card-Type
 	@Override
 	public String toString() {
@@ -54,5 +66,10 @@ public class Card {
 		}
 
 		return this.suit == othercard.suit || this.type == othercard.type;
+	}
+	public String getImagePath() {
+//		String image = "src/main/resources/card-img/" + this.toString() + ".png";
+//		File file = new File(image);
+		return "src/main/resources/card_img/" + blatt + "/" + suit + "-" + type + ".png";
 	}
 }
