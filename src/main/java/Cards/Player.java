@@ -18,7 +18,7 @@ public class Player {
         hand = new CardStack();
     }
 
-    public String getPlayerName() {
+    public String getName() {
         return playerName;
     }
 
@@ -26,7 +26,7 @@ public class Player {
         return hand;
     }
 
-    public void setPlayerName(String playerName) {
+    public void setName(String playerName) {
         this.playerName = playerName;
     }
 
@@ -43,7 +43,7 @@ public class Player {
     // Method to draw a Card from a specified stack
     public Card drawCardFromStack(CardStack stack) {
         Card card = stack.getTopCard();
-        hand.addCard(card);
+        this.hand.addCard(card);
         stack.removeCard(card);
         return card;
     }
