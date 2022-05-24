@@ -31,6 +31,13 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
+<!-- 
+   @author Tobias Hering
+   @version 0.1
+   @comment JavaFX-Scene for the main window
+
+   @documentation https://openjfx.io/
+ -->
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -38,6 +45,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -66,10 +74,10 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Einstellungen">
                <items>
-                  <Menu disable="true" mnemonicParsing="false" text="Design">
+                  <Menu mnemonicParsing="false" text="Kartenblatt">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Design 1" />
-                        <MenuItem mnemonicParsing="false" text="Design 2" />
+                      <MenuItem mnemonicParsing="false" text="Standard" />
+                        <MenuItem mnemonicParsing="false" text="Blatt x" />
                     </items>
                   </Menu>
                   <Menu disable="true" mnemonicParsing="false" text="Sprache">
@@ -92,23 +100,26 @@
          <children>
             <HBox>
                <children>
-                  <VBox>
+                  <VBox spacing="10.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spielstatistiken">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="20.0" />
+                              <Insets />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler x ist an der Reihe..." wrappingWidth="137.61328125">
+                        <Separator prefWidth="200.0" />
+                        <Text fx:id="timer" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: 00:00:11" />
+                        <Separator prefWidth="200.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler $SPIELER ist an der Reihe.." wrappingWidth="200.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$SPIELER_VORHER hat eine Karte gezogen." />
                         <Button fx:id="btnNextPlayer" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Nächster Spieler" />
-                        <Text fx:id="timer" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: 00:00:11" wrappingWidth="102.2734375" />
                      </children>
                   </VBox>
                   <Region HBox.hgrow="ALWAYS" />
