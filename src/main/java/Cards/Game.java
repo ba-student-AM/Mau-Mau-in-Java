@@ -23,15 +23,11 @@ public class Game {
 	public int numCurrentPlayer;
 	private Player currentPlayer;
 
-	private Card declaredCard; // Card that is on the top of drawStack during Gameplay
+	private Card declaredCard; // Card that is on the top of putStack during Gameplay
 	private CardStack drawStack;
-	private CardStack putStack;
-
+	CardStack putStack;
 	/*private Suit validSuit;
 	 *private Type validType;*/
-
-	@FXML
-	private ImageView currentCard;
 
 	// Constructor
 	public Game(String[] pNames) {
@@ -58,22 +54,17 @@ public class Game {
 		addPlayers();
 		this.createPlayerHands();
 
-		CardStack putStack = new CardStack(); 
+		putStack = new CardStack();
 		putStack.addCard(drawStack.getTopCard());
 		declaredCard = getDeclaredCard();
-		//initializeGUI();
-
-	}
-	public void initializeGUI() throws FileNotFoundException {
-		// topCard = putStack.getCurrentTopCard();
-		try {
-			currentCard.setImage(new Image(new FileInputStream(declaredCard.getImagePath())));
-		}catch (FileNotFoundException e){
-			System.out.println("File not found");
-		}
+		drawStack.removeCard(declaredCard); //TODO: removes the first card and not the declaredCard for some reason
+		System.out.println("putStack topCard is " + declaredCard);
+		System.out.println("putStack has " + putStack.size() + " cards.");
+		System.out.println("drawStack topCard is " + drawStack.getTopCard());
+		System.out.println("drawStack has " + drawStack.size() + " cards.");
 	}
 	// Method to give out Cards to players
-	public void createPlayerHands() {
+	public void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
 		// iterate through players and add NUM_INITIAL_CARDS to their hand from drawStack
 		for (int i = 0; i < players.length; i++) {
 			for (int j = 0; j < NUM_INITIAL_CARDS; j++) {
@@ -100,7 +91,7 @@ public class Game {
 
 	// Method to get our winner
 	private Player getWinningPlayer() {
-		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player; 
+		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player;
 		return null;
 	}
 

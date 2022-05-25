@@ -33,10 +33,10 @@ public class NewGameController {
     private int playerCount;
     private int i;
 
-    public String[] playerNames;
+    public static String[] playerNames;
 
     @FXML
-    public void submit() throws IOException {
+    public void submit() throws IOException { //TODO: check for valid inputs and duplicate names, maybe add min and max nameLength
         playerCount = 0;
         if (!textField_P1.getText().isEmpty()) {
             playerCount++;
@@ -81,10 +81,7 @@ public class NewGameController {
         System.out.println(players.length);
         button_startGame.setDisable(true);
 
-        Game game = new Game(players);
-        game.startGame(game);
         App.setRoot("gui");
-        //MainController.initializeGUI(game); //TODO funktioniert nicht :)
     }
 
 
@@ -95,7 +92,7 @@ public class NewGameController {
 
     //enable button only when >= 2 textfields are filled
     @FXML
-    public void keyPressed(KeyEvent event) {
+    public void keyPressed(KeyEvent event) { //TODO: change to event key-released
         playerCount = 0;
         button_startGame.setDisable(true);
         if (!textField_P1.getText().isEmpty()) {
