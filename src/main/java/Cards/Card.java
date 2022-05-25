@@ -1,7 +1,5 @@
 package Cards;
 
-import java.io.File;
-
 /**
  * @author Arved Meyer
  * @author Tobias Hering

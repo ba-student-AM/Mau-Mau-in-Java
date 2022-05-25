@@ -64,7 +64,7 @@ public class MainController {
 //    System.out.println("test");
   }
   public void initializeGUI(Game game) throws FileNotFoundException {
-    Card topCard = game.getTopCard();
+    Card topCard = game.getDeclaredCard();
     currentCard.setImage(new Image(new FileInputStream(topCard.getImagePath())));
   }
 }

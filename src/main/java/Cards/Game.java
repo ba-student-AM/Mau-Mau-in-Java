@@ -23,12 +23,12 @@ public class Game {
 	public int numCurrentPlayer;
 	private Player currentPlayer;
 
-	private Card topCard; // Card that is on the top of drawStack during Gameplay
+	private Card declaredCard; // Card that is on the top of drawStack during Gameplay
 	private CardStack drawStack;
 	private CardStack putStack;
 
-	private Suit validSuit;
-	private Type validType;
+	/*private Suit validSuit;
+	 *private Type validType;*/
 
 	@FXML
 	private ImageView currentCard;
@@ -57,13 +57,17 @@ public class Game {
 		createDrawStack();
 		addPlayers();
 		this.createPlayerHands();
+
+		CardStack putStack = new CardStack(); 
+		putStack.addCard(drawStack.getTopCard());
+		declaredCard = getDeclaredCard();
 		//initializeGUI();
 
 	}
 	public void initializeGUI() throws FileNotFoundException {
-		topCard = drawStack.getTopCard();
+		// topCard = putStack.getCurrentTopCard();
 		try {
-			currentCard.setImage(new Image(new FileInputStream(topCard.getImagePath())));
+			currentCard.setImage(new Image(new FileInputStream(declaredCard.getImagePath())));
 		}catch (FileNotFoundException e){
 			System.out.println("File not found");
 		}
@@ -80,12 +84,7 @@ public class Game {
 		for (int i = 0; i < players.length; i++) {
 			System.out.println(players[i].getName() + " has " + players[i].getHand().size() + " cards.");
 			System.out.println("drawStack has " + drawStack.size() + " cards.");
-
 		}
-
-
-
-
 		// Use both forEach and traditional for-loop
 	}
 
@@ -94,14 +93,14 @@ public class Game {
 		return players;
 	}
 
-	// Getter for current topCard
-	public Card getTopCard() {
-		return drawStack.getTopCard();
+	// Getter for current declaredCard
+	public Card getDeclaredCard() {
+		return putStack.getTopCard();
 	}
 
 	// Method to get our winner
 	private Player getWinningPlayer() {
-		// TODO: Iterate through players and check if their hand is empty. If yes, return them.
+		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player; 
 		return null;
 	}
 
