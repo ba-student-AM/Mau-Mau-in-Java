@@ -33,7 +33,7 @@
 -->
 <!-- 
    @author Tobias Hering
-   @version 0.1
+   @version 0.0.1
    @comment JavaFX-Scene for the main window
 
    @documentation https://openjfx.io/
@@ -77,7 +77,7 @@
                   <Menu mnemonicParsing="false" text="Kartenblatt">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Standard" />
-                        <MenuItem mnemonicParsing="false" text="Blatt x" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="..." />
                     </items>
                   </Menu>
                   <Menu disable="true" mnemonicParsing="false" text="Sprache">
@@ -90,7 +90,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Hilfe / Über / ...">
           <items>
-            <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#handleAbout" text="Über das Programm" />
+            <MenuItem fx:id="menuAbout" disable="true" mnemonicParsing="false" text="Über das Programm" />
                   <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test..." />
           </items>
         </Menu>
@@ -111,13 +111,27 @@
                            </VBox.margin>
                         </Text>
                         <Separator prefWidth="200.0" />
-                        <Text fx:id="timer" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: 00:00:11" />
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spielzeit: " />
+                                    <Text fx:id="timerPlayTime" strokeType="OUTSIDE" strokeWidth="0.0" text="--:--:--" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                         <Separator prefWidth="200.0" />
-                        <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler $SPIELER ist an der Reihe.." wrappingWidth="200.0" VBox.vgrow="ALWAYS">
+                        <HBox VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
-                        </Text>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler " />
+                              <Text fx:id="currentPlayer" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$SPIELER" />
+                              <Text layoutX="210.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" ist dran" />
+                           </children>
+                        </HBox>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$SPIELER_VORHER hat eine Karte gezogen." />
                         <Button fx:id="btnNextPlayer" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Nächster Spieler" />
                      </children>
