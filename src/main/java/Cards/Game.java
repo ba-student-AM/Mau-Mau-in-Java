@@ -82,6 +82,11 @@ public class Game {
 	public Card getDeclaredCard() {
 		return putStack.getTopCard();
 	}
+	
+	// Getter for currentPlayer 
+	public Player getCurrentPlayer() {
+		return this.currentPlayer;
+	}
 
 	// Method to get our winner
 	private Player getWinningPlayer() {
