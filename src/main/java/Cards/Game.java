@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 /**
  * @author Arved Meyer
- * @version 0.3.1
+ * @version 0.3.3
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
@@ -18,10 +18,10 @@ public class Game {
 	private Player currentPlayer;
 
 	private Card declaredCard; // Card that is on the top of putStack during Gameplay
+	private Suit declaredSuit; 
 	private CardStack drawStack;
 	CardStack putStack;
-	/*private Suit validSuit;
-	 *private Type validType;*/
+	
 
 	// Constructor
 	public Game(String[] pNames) {
@@ -42,6 +42,7 @@ public class Game {
 		drawStack = CardStack.initDeck();
 		drawStack.shuffle();
 	}
+	
 	// Method to start our game;
 	public void startGame(Game game) throws FileNotFoundException {
 		createDrawStack();
@@ -51,12 +52,23 @@ public class Game {
 		putStack = new CardStack();
 		putStack.addCard(drawStack.getTopCard());
 		declaredCard = getDeclaredCard();
-		drawStack.removeCard(declaredCard); //TODO: removes the first card and not the declaredCard for some reason
+		drawStack.removeCard(declaredCard);
+		declaredSuit = declaredCard.getSuit();
+		Player currentPlayer = players[0];
+		
+		while (getWinningPlayer() == null) {
+			
+		} 
+		
+		endGame();
+		
+		//TODO: removes the first card and not the declaredCard for some reason
 		System.out.println("putStack topCard is " + declaredCard);
 		System.out.println("putStack has " + putStack.size() + " cards.");
 		System.out.println("drawStack topCard is " + drawStack.getTopCard());
 		System.out.println("drawStack has " + drawStack.size() + " cards.");
 	}
+	
 	// Method to give out Cards to players
 	public void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
 		// iterate through players and add NUM_INITIAL_CARDS to their hand from drawStack
@@ -95,7 +107,18 @@ public class Game {
 	}
 
 	// Method to end our game
-	private void gameEnds() {
+	private void endGame() {
 		// TODO: Get our winning player, ...
 	}
+	
+	public Suit getDeclaredSuit() {
+		return this.declaredSuit; 
+	}
 }
+
+/* Rules of the game: 
+ * - declaredCard has TYPE "SIEBEN" ? Player must draw two cards from drawStack - next Player can just add a card with the same SUIT 
+ * - declaredCard has TYPE "ASS"    ? Player can play another card 
+ * - declaredCard has TYPE "ACHT"   ? Next Player is skipped - we go from player 1 to Player 3, for two players, the effect is practically the same as an "ASS"
+ * - declaredCard has TYPE "BUBE"   ? Current player gets a Pop-Up to select which SUIT he wishes for - his selection overwrites the current declaredSUIT 
+ * */
