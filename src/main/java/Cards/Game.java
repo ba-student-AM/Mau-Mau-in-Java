@@ -56,9 +56,9 @@ public class Game {
 		declaredSuit = declaredCard.getSuit();
 		Player currentPlayer = players[0];
 		
-		while (getWinningPlayer() == null) {
+		// while (getWinningPlayer() == null) {
 			
-		} 
+		// } 
 		
 		endGame();
 		
