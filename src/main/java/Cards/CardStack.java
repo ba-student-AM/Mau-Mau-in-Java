@@ -92,7 +92,6 @@ public class CardStack {
 				return card;
 			}
 		}
-
 		return null;
 	}
 	

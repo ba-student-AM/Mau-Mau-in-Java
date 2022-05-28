@@ -111,9 +111,23 @@ public class Game {
 		// TODO: Get our winning player, ...
 	}
 	
+	// Method to get declaredCard 
 	public Suit getDeclaredSuit() {
 		return this.declaredSuit; 
 	}
+	
+	// Method for when a player draws another Card 
+	public void submitDraw() {
+		
+		if (drawStack.isEmpty()) {
+			putStack.moveAllCards(drawStack);
+			drawStack.shuffle();
+			putStack.addCard(drawStack.getTopCard());
+			declaredCard = getDeclaredCard();
+		}
+		currentPlayer.drawCardFromStack(drawStack); 
+	}
+	
 }
 
 /* Rules of the game: 
