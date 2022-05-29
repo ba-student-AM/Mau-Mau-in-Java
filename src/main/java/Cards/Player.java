@@ -2,7 +2,7 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.1.0
+ * @version 0.2.0
  * @comment Class to model a player in the game
  */
 
@@ -48,10 +48,15 @@ public class Player {
         return card;
     }
 
-    // 
+    // Method to test if a player has a matching card 
     public boolean hasCardMatching(Card card) {
         this.matchingCard = hand.getMatchingCard(card);
         return this.matchingCard != null; 
+    }
+    
+    // Method to get the players selected Card 
+    public Card getPlayerCard(int n) {
+    	return hand.drawNthCard(n);
     }
 
 }

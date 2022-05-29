@@ -19,6 +19,8 @@ public class CardStackTest {
 		
 		System.out.println(secondStack.toString());
 		System.out.println("Dies ist die größe von secondStack: " + secondStack.size());
+		
+		System.out.println(secondStack.drawNthCard(5).toString());
 	}
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Arved Meyer
  * @author Tobias Hering
- * @version 1.1.0
+ * @version 1.2.0
  * @comment Class to Model a STACK of CARDS 
  */
 
@@ -115,5 +115,10 @@ public class CardStack {
 			itr.remove();
 			targetStack.addCard(card);
 		}
+	}
+	
+	// Method to get a specific element of Cards 
+	public Card drawNthCard(int n) {
+		return cards.get(n);
 	}
 }

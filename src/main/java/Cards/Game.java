@@ -19,7 +19,7 @@ public class Game {
 
 	private Card declaredCard; // Card that is on the top of putStack during Gameplay
 	private Suit declaredSuit; 
-	private CardStack drawStack;
+    CardStack drawStack;
 	CardStack putStack;
 	
 
@@ -54,7 +54,9 @@ public class Game {
 		declaredCard = getDeclaredCard();
 		drawStack.removeCard(declaredCard);
 		declaredSuit = declaredCard.getSuit();
-		Player currentPlayer = players[0];
+		
+		numCurrentPlayer = 0; 
+		Player currentPlayer = players[numCurrentPlayer];
 		
 		// while (getWinningPlayer() == null) {
 			
@@ -126,6 +128,10 @@ public class Game {
 			declaredCard = getDeclaredCard();
 		}
 		currentPlayer.drawCardFromStack(drawStack); 
+		
+		// Important: changes the current Player
+		currentPlayer = players[numCurrentPlayer + 1 % players.length];
+		numCurrentPlayer = numCurrentPlayer +1 % players.length;  
 	}
 	
 }
