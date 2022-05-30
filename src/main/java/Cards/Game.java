@@ -134,11 +134,22 @@ public class Game {
 		numCurrentPlayer = numCurrentPlayer +1 % players.length;  
 	}
 	
+	/* Method to get declaredCardType
+	public Type getDeclaredType(){
+		return this.declaredType;
+	}
+	
+	Method for when DeclaredType=="SIEBEN"
+		for(int i=2;declaredType==7;i--;){
+			currentPlayer.drawCardFromStack(drawStack);
+		}
+	*/
 }
 
 /* Rules of the game: 
  * - declaredCard has TYPE "SIEBEN" ? Player must draw two cards from drawStack - next Player can just add a card with the same SUIT 
- * - declaredCard has TYPE "ASS"    ? Player can play another card 
+ * 
+ * - declaredCard has TYPE "ASS"    ? Player can play another card
  * - declaredCard has TYPE "ACHT"   ? Next Player is skipped - we go from player 1 to Player 3, for two players, the effect is practically the same as an "ASS"
  * - declaredCard has TYPE "BUBE"   ? Current player gets a Pop-Up to select which SUIT he wishes for - his selection overwrites the current declaredSUIT 
  * */
