@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 
 /**
  * @author Arved Meyer
+ * @author John Kühnel
+ * @author Tobias Hering
  * @version 0.3.3
  * @comment Class to Model the logic of a game of Mau-Mau
  */
@@ -42,19 +44,25 @@ public class Game {
 		drawStack = CardStack.initDeck();
 		drawStack.shuffle();
 	}
-	
+
+	// Method to create our Stack of cards that are put on the table
+	private void createPutStack() {
+		putStack = new CardStack();
+	}
+
 	// Method to start our game;
 	public void startGame(Game game) throws FileNotFoundException {
 		createDrawStack();
+		createPutStack();
+
 		addPlayers();
 		this.createPlayerHands();
 
-		putStack = new CardStack();
 		putStack.addCard(drawStack.getTopCard());
 		declaredCard = getDeclaredCard();
-		drawStack.removeCard(declaredCard);
+		drawStack.removeCardIndex(drawStack.getTopCardIndex());
 		declaredSuit = declaredCard.getSuit();
-		
+
 		numCurrentPlayer = 0; 
 		Player currentPlayer = players[numCurrentPlayer];
 		

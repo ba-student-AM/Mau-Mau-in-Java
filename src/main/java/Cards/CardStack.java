@@ -48,10 +48,18 @@ public class CardStack {
 	public Card getTopCard() {
 		return cards.get(cards.size() - 1);
 	}
+
+	public int getTopCardIndex() {
+		return this.size() - 1;
+	}
 	
 	// Method to remove a card from our Stack 
 	void removeCard(Card card) {
-		this.cards.remove(card); 
+		this.cards.remove(card);
+	}
+
+	void removeCardIndex(int index) {
+		this.cards.remove(index);
 	}
 
 	// Method to get our Cards 
