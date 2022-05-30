@@ -22,11 +22,11 @@ import javafx.scene.text.Text;
 
 public class MainController {
   @FXML
-  public ImageView currentCard;
+  private ImageView currentCard;
   @FXML
-  public Text currentPlayer;
+  private Text currentPlayer;
   @FXML
-  public Text timerPlayTime;
+  private Text timerPlayTime;
   @FXML
   private ImageView handCard_0;
   @FXML
@@ -40,15 +40,38 @@ public class MainController {
   @FXML
   private ImageView handCard_5;
 
-	GameTimer playTime;
+	private GameTimer playTime;
 
 
 	// executed on scene loading
   public void initialize() throws FileNotFoundException {
-    if (NewGameController.playerNames != null) { //TODO: check if game is running instead
+    try {
+      // DEBUG
+      System.out.println("PlayerCount (Controller: Main): " + Game.getPlayerCount());
+      System.out.println("PlayerNames (Controller: Main): " + Game.getPlayerNames());
+      for (String string : Game.getPlayerNames()) {
+        System.out.println(string);
+      }
+
+      // INIT
       initializeGame();
       startTimer();
+    } catch (Exception e) {
+      //TODO: handle exception
+      System.out.println("Game is not initialized yet! Start a new game!");
     }
+  }
+
+  private void initializeGame () throws FileNotFoundException {
+		Game.startGame();
+		Card topCard_drawStack = Game.getDeclaredCard();
+		currentCard.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
+		currentPlayer.setText(Game.getPlayers()[0].getName());
+  }
+
+  private void startTimer() {
+		playTime = new GameTimer();
+    playTime.start();
   }
 
   // close the application
@@ -76,27 +99,19 @@ public class MainController {
 
 	// set playtime in the gui
   @FXML
-  public void setPlayTime(String time) {
-    timerPlayTime.setText(time);
+  public void setPlayTime(String text) {
+    timerPlayTime.setText(text);
+  }
+
+  @FXML
+  public void setCurrentPlayer(String text) {
+    currentPlayer.setText(text);
   }
 
   @FXML
   private void handleMenuTest() {
     System.out.println("test");
     currentCard.setImage(new Image("https://cataas.com/cat/says/hello%20world!"));
-  }
-
-  private void startTimer() {
-		playTime = new GameTimer();
-    playTime.start();
-  }
-
-  private void initializeGame () throws FileNotFoundException {
-		Game game = new Game(NewGameController.playerNames);
-		game.startGame(game);
-		Card topCard_drawStack = game.getDeclaredCard();
-		currentCard.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
-		currentPlayer.setText(game.getPlayers()[0].getName());
   }
 
 
@@ -153,7 +168,7 @@ public class MainController {
     @Override
     public void run() {
       String playTime = toString();
-      System.out.println(playTime);
+      // System.out.println(playTime);
       setPlayTime(playTime);
 
       seconds++;

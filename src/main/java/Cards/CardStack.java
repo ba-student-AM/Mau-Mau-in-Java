@@ -58,7 +58,7 @@ public class CardStack {
 		this.cards.remove(card);
 	}
 
-	void removeCardIndex(int index) {
+	public void removeCardIndex(int index) {
 		this.cards.remove(index);
 	}
 

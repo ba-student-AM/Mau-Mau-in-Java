@@ -10,28 +10,28 @@ import java.io.FileNotFoundException;
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
-public class Game {
+final public class Game {
 
-	public final int NUM_INITIAL_CARDS = 5;
+	public final static int NUM_INITIAL_CARDS = 5;
 
-	private Player[] players;
-	private String[] playerNames;
-	public int numCurrentPlayer;
-	private Player currentPlayer;
+	private static int currentPlayerIndex;
+	private static Player currentPlayer;
+	private static Player[] players;
+	private static String[] playerNames;
 
-	private Card declaredCard; // Card that is on the top of putStack during Gameplay
-	private Suit declaredSuit; 
-    CardStack drawStack;
-	CardStack putStack;
+	private static Card declaredCard; // Card that is on the top of putStack during Gameplay
+	private static Suit declaredSuit; 
+	private static CardStack drawStack;
+	private static CardStack putStack;
 	
 
 	// Constructor
-	public Game(String[] pNames) {
-		playerNames = pNames;
+	public Game() {
+
 	}
 
 	// Method to generate instances of class Player and add them to Players
-	void addPlayers() {
+	static void addPlayers() {
 		//For each element of playerNames, generate a new player-object and add it to players
 		players = new Player[playerNames.length];
 		for (int i = 0; i < playerNames.length; i++) {
@@ -40,39 +40,40 @@ public class Game {
 	}
 
 	// Method to create our main Stack of cards
-	private void createDrawStack() {
+	private static void createDrawStack() {
 		drawStack = CardStack.initDeck();
 		drawStack.shuffle();
 	}
 
 	// Method to create our Stack of cards that are put on the table
-	private void createPutStack() {
+	private static void createPutStack() {
 		putStack = new CardStack();
 	}
 
 	// Method to start our game;
-	public void startGame(Game game) throws FileNotFoundException {
+	public static void startGame() throws FileNotFoundException {
 		createDrawStack();
 		createPutStack();
 
 		addPlayers();
-		this.createPlayerHands();
+		createPlayerHands();
 
 		putStack.addCard(drawStack.getTopCard());
 		declaredCard = getDeclaredCard();
 		drawStack.removeCardIndex(drawStack.getTopCardIndex());
 		declaredSuit = declaredCard.getSuit();
 
-		numCurrentPlayer = 0; 
-		Player currentPlayer = players[numCurrentPlayer];
+		// TODO: Randomize who starts the game
+		currentPlayerIndex = 1; 
+
+		setCurrentPlayerName(currentPlayerIndex);
 		
 		// while (getWinningPlayer() == null) {
 			
 		// } 
 		
-		endGame();
+		// endGame();
 		
-		//TODO: removes the first card and not the declaredCard for some reason
 		System.out.println("putStack topCard is " + declaredCard);
 		System.out.println("putStack has " + putStack.size() + " cards.");
 		System.out.println("drawStack topCard is " + drawStack.getTopCard());
@@ -80,7 +81,7 @@ public class Game {
 	}
 	
 	// Method to give out Cards to players
-	public void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
+	public static void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
 		// iterate through players and add NUM_INITIAL_CARDS to their hand from drawStack
 		for (int i = 0; i < players.length; i++) {
 			for (int j = 0; j < NUM_INITIAL_CARDS; j++) {
@@ -92,22 +93,45 @@ public class Game {
 			System.out.println(players[i].getName() + " has " + players[i].getHand().size() + " cards.");
 			System.out.println("drawStack has " + drawStack.size() + " cards.");
 		}
-		// Use both forEach and traditional for-loop
 	}
 
-	// Getter for PlayerNames
-	public Player[] getPlayers() {
+	// Getters and Setters for Players and their names
+	public static Player[] getPlayers() {
 		return players;
 	}
 
-	// Getter for current declaredCard
-	public Card getDeclaredCard() {
-		return putStack.getTopCard();
+	public static String[] getPlayerNames() {
+		return playerNames;
+	}
+
+	public static void setPlayerNames(String[] name) {
+		playerNames = name;
+	}
+
+	public static int getPlayerCount() {
+		return playerNames.length;
 	}
 	
 	// Getter for currentPlayer 
 	public Player getCurrentPlayer() {
-		return this.currentPlayer;
+		return players[currentPlayerIndex];
+	}
+
+	public String getCurrentPlayerName() {
+		return playerNames[currentPlayerIndex];
+	}
+
+	public static void setCurrentPlayer(Player player) {
+		currentPlayer = player;
+	}
+
+	public static void setCurrentPlayerName(int index) {
+		currentPlayerIndex = index;
+	}
+
+	// Getter for current declaredCard
+	public static Card getDeclaredCard() {
+		return putStack.getTopCard();
 	}
 
 	// Method to get our winner
@@ -138,8 +162,8 @@ public class Game {
 		currentPlayer.drawCardFromStack(drawStack); 
 		
 		// Important: changes the current Player
-		currentPlayer = players[numCurrentPlayer + 1 % players.length];
-		numCurrentPlayer = numCurrentPlayer +1 % players.length;  
+		currentPlayer = players[currentPlayerIndex + 1 % players.length];
+		currentPlayerIndex = currentPlayerIndex +1 % players.length;  
 	}
 	
 	/* Method to get declaredCardType
