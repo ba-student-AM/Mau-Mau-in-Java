@@ -14,7 +14,7 @@ final public class Game {
 
 	public final static int NUM_INITIAL_CARDS = 5;
 
-	private static int currentPlayerIndex;
+	private static int currentPlayerIndex = 0;
 	private static Player currentPlayer;
 	private static Player[] players;
 	private static String[] playerNames;
@@ -23,11 +23,17 @@ final public class Game {
 	private static Suit declaredSuit; 
 	private static CardStack drawStack;
 	private static CardStack putStack;
+
+	private static boolean isRunning;
 	
 
-	// Constructor
-	public Game() {
+	// Getter and setter for game state
+	public static boolean	isRunning() {
+		return isRunning;
+	}
 
+	public static void	isRunning(Boolean state) {
+		isRunning = state;
 	}
 
 	// Method to generate instances of class Player and add them to Players
@@ -63,15 +69,15 @@ final public class Game {
 		drawStack.removeCardIndex(drawStack.getTopCardIndex());
 		declaredSuit = declaredCard.getSuit();
 
-		// TODO: Randomize who starts the game
-		currentPlayerIndex = 1; 
-
-		setCurrentPlayerName(currentPlayerIndex);
+		// TODO: Randomize who starts the game random(0...player.length)
+		setCurrentPlayerIndex(currentPlayerIndex);
 		
+		// TODO: create the round structure;
+		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
 		// while (getWinningPlayer() == null) {
-			
 		// } 
 		
+		// TODO: end the game --> see above (MainController)
 		// endGame();
 		
 		System.out.println("putStack topCard is " + declaredCard);
@@ -96,12 +102,21 @@ final public class Game {
 	}
 
 	// Getters and Setters for Players and their names
+	// TODO: --> remove playerNames array and replace with Object references (redundant)
 	public static Player[] getPlayers() {
 		return players;
 	}
 
+	public static String getPlayerName(int index) {
+		return playerNames[index];
+	}
+
 	public static String[] getPlayerNames() {
 		return playerNames;
+	}
+
+	public static void setPlayerName(int index, String name) {
+		playerNames[index] = name;
 	}
 
 	public static void setPlayerNames(String[] name) {
@@ -112,20 +127,20 @@ final public class Game {
 		return playerNames.length;
 	}
 	
-	// Getter for currentPlayer 
-	public Player getCurrentPlayer() {
+	// Getters and Setters for currentPlayer 
+	public static Player getCurrentPlayer() {
 		return players[currentPlayerIndex];
 	}
 
-	public String getCurrentPlayerName() {
+	public static String getCurrentPlayerName() {
 		return playerNames[currentPlayerIndex];
 	}
 
-	public static void setCurrentPlayer(Player player) {
-		currentPlayer = player;
+	public static int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
 	}
 
-	public static void setCurrentPlayerName(int index) {
+	public static void setCurrentPlayerIndex(int index) {
 		currentPlayerIndex = index;
 	}
 
@@ -135,23 +150,28 @@ final public class Game {
 	}
 
 	// Method to get our winner
-	private Player getWinningPlayer() {
+	public static Player getWinningPlayer() {
 		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player;
+		// TODO: OR check at the end of every round if the hand of currentPlayer isEmpty. If YES, return the winning Player --> end game;
+		if (currentPlayer.getHand().isEmpty()) {
+			return currentPlayer;
+		}
 		return null;
 	}
 
 	// Method to end our game
-	private void endGame() {
+	public static void endGame() {
 		// TODO: Get our winning player, ...
+		getWinningPlayer();
 	}
 	
 	// Method to get declaredCard 
-	public Suit getDeclaredSuit() {
-		return this.declaredSuit; 
+	public static Suit getDeclaredSuit() {
+		return declaredSuit; 
 	}
 	
 	// Method for when a player draws another Card 
-	public void submitDraw() {
+	public static void submitDraw() {
 		
 		if (drawStack.isEmpty()) {
 			putStack.moveAllCards(drawStack);
