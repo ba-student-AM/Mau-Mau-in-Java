@@ -1,6 +1,7 @@
 package Cards;
 
 import java.io.FileNotFoundException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Arved Meyer
@@ -66,8 +67,9 @@ final public class Game {
 		drawStack.removeCardIndex(drawStack.getTopCardIndex());
 		declaredSuit = declaredCard.getSuit();
 
-		// TODO: Randomize who starts the game random(0...player.length)
-		setCurrentPlayer(currentPlayerIndex);
+		// Randomize the current player on start
+		int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, getPlayerCount());
+		setCurrentPlayerIndex(randomPlayerIndex);
 		
 		// TODO: create the round structure;
 		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
@@ -128,14 +130,14 @@ final public class Game {
 	}
 
 	public static String getCurrentPlayerName() {
-		return players[currentPlayerIndex].getName();
+		return getCurrentPlayer().getName();
 	}
 
 	public static int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
 	}
 
-	public static void setCurrentPlayer(int index) {
+	public static void setCurrentPlayerIndex(int index) {
 		currentPlayerIndex = index;
 	}
 
@@ -148,14 +150,14 @@ final public class Game {
 	public static void setCurrentPlayerNext() {
 		currentPlayerIndex++;
 		if (currentPlayerIndex >= players.length) {
-			currentPlayerIndex = 0;
+			setCurrentPlayerIndex(0);
 		}
 	}
 
 	public static void setCurrentPlayerPrev() {
 		currentPlayerIndex--;
 		if (currentPlayerIndex < 0) {
-			currentPlayerIndex = players.length - 1;
+			setCurrentPlayerIndex(players.length - 1);
 		}
 	}
 

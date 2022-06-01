@@ -66,7 +66,7 @@ public class MainController {
 		Game.startGame();
 		Card topCard_drawStack = Game.getDeclaredCard();
 		currentCard.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
-		currentPlayer.setText(Game.getPlayers()[0].getName());
+		setCurrentPlayer();
   }
 
   private void startTimer() {
@@ -80,7 +80,7 @@ public class MainController {
     System.exit(0);
   }
 
-  // (re)start the game
+  // handle Buttons in the scene
   @FXML
   private void handleNewGame() throws IOException {
     // TODO: function to start a new game (in NewGame window?)
@@ -97,14 +97,15 @@ public class MainController {
     // TODO: function to switch to next player
   }
 
-	// set playtime in the gui
+	// set Text in the GUI
   @FXML
   public void setPlayTime(String text) {
     timerPlayTime.setText(text);
   }
 
   @FXML
-  public void setCurrentPlayer(String text) {
+  public void setCurrentPlayer() {
+    String text = Game.getCurrentPlayerName();
     currentPlayer.setText(text);
   }
 
