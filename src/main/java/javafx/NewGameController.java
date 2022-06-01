@@ -71,7 +71,7 @@ public class NewGameController {
 
     button_startGame.setDisable(true);
 
-    Game.setPlayerNames(playerNames);
+    Game.addPlayers(playerNames);
     Game.getPlayerCount();
 
     // DEBUG

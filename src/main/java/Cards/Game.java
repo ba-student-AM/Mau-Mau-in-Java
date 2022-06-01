@@ -17,7 +17,6 @@ final public class Game {
 	private static int currentPlayerIndex = 0;
 	private static Player currentPlayer;
 	private static Player[] players;
-	private static String[] playerNames;
 
 	private static Card declaredCard; // Card that is on the top of putStack during Gameplay
 	private static Suit declaredSuit; 
@@ -37,7 +36,7 @@ final public class Game {
 	}
 
 	// Method to generate instances of class Player and add them to Players
-	static void addPlayers() {
+	public static void addPlayers(String[] playerNames) {
 		//For each element of playerNames, generate a new player-object and add it to players
 		players = new Player[playerNames.length];
 		for (int i = 0; i < playerNames.length; i++) {
@@ -60,8 +59,6 @@ final public class Game {
 	public static void startGame() throws FileNotFoundException {
 		createDrawStack();
 		createPutStack();
-
-		addPlayers();
 		createPlayerHands();
 
 		putStack.addCard(drawStack.getTopCard());
@@ -107,24 +104,22 @@ final public class Game {
 		return players;
 	}
 
-	public static String getPlayerName(int index) {
-		return playerNames[index];
+	public static String getPlayerName(Player player) {
+		return player.getName();
 	}
 
 	public static String[] getPlayerNames() {
+		String[] playerNames = new String[players.length];
+		int i = 0;
+		for (Player player : players) {
+			playerNames[i] = player.getName();
+			i++;
+		}
 		return playerNames;
 	}
 
-	public static void setPlayerName(int index, String name) {
-		playerNames[index] = name;
-	}
-
-	public static void setPlayerNames(String[] name) {
-		playerNames = name;
-	}
-
 	public static int getPlayerCount() {
-		return playerNames.length;
+		return players.length;
 	}
 	
 	// Getters and Setters for currentPlayer 
@@ -133,7 +128,7 @@ final public class Game {
 	}
 
 	public static String getCurrentPlayerName() {
-		return playerNames[currentPlayerIndex];
+		return players[currentPlayerIndex].getName();
 	}
 
 	public static int getCurrentPlayerIndex() {
