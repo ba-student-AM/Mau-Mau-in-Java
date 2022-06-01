@@ -67,7 +67,7 @@ final public class Game {
 		declaredSuit = declaredCard.getSuit();
 
 		// TODO: Randomize who starts the game random(0...player.length)
-		setCurrentPlayerIndex(currentPlayerIndex);
+		setCurrentPlayer(currentPlayerIndex);
 		
 		// TODO: create the round structure;
 		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
@@ -135,13 +135,28 @@ final public class Game {
 		return currentPlayerIndex;
 	}
 
-	public static void setCurrentPlayerIndex(int index) {
+	public static void setCurrentPlayer(int index) {
 		currentPlayerIndex = index;
 	}
 
 	// Getter for current declaredCard
 	public static Card getDeclaredCard() {
 		return putStack.getTopCard();
+	}
+
+	// Method to change the current player
+	public static void setCurrentPlayerNext() {
+		currentPlayerIndex++;
+		if (currentPlayerIndex >= players.length) {
+			currentPlayerIndex = 0;
+		}
+	}
+
+	public static void setCurrentPlayerPrev() {
+		currentPlayerIndex--;
+		if (currentPlayerIndex < 0) {
+			currentPlayerIndex = players.length - 1;
+		}
 	}
 
 	// Method to get our winner
