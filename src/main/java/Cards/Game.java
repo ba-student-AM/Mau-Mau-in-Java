@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Arved Meyer
  * @author John Kühnel
  * @author Tobias Hering
- * @version 0.3.3
+ * @version 0.4.0
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
@@ -28,7 +28,7 @@ final public class Game {
 	
 
 	// Getter and setter for game state
-	public static boolean	isRunning() {
+	public static boolean isRunning() {
 		return isRunning;
 	}
 
@@ -163,18 +163,21 @@ final public class Game {
 
 	// Method to get our winner
 	public static Player getWinningPlayer() {
-		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player;
-		// TODO: OR check at the end of every round if the hand of currentPlayer isEmpty. If YES, return the winning Player --> end game;
+		
 		if (currentPlayer.getHand().isEmpty()) {
 			return currentPlayer;
 		}
 		return null;
 	}
 
-	// Method to end our game
-	public static void endGame() {
-		// TODO: Get our winning player, ...
-		getWinningPlayer();
+	// Method to check if our game is over 
+	public boolean isGameOver() {
+		for (Player player: players) {
+			if (player.hasEmptyHand()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	// Method to get declaredCard 
@@ -196,6 +199,13 @@ final public class Game {
 		// Important: changes the current Player
 		currentPlayer = players[currentPlayerIndex + 1 % players.length];
 		currentPlayerIndex = currentPlayerIndex +1 % players.length;  
+	}
+	
+	/* Method to get out current Players chosen card 
+	 * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
+	public Card getPlayerChoice (int choice) {
+		
+		return getCurrentPlayer().getPlayerCard(choice);
 	}
 	
 	/* Method to get declaredCardType
