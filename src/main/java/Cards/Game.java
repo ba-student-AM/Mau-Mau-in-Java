@@ -20,6 +20,7 @@ final public class Game {
 	private static Player[] players;
 
 	private static Card declaredCard; // Card that is on the top of putStack during Gameplay
+	private static Type declaredType;
 	private static Suit declaredSuit; 
 	private static CardStack drawStack;
 	private static CardStack putStack;
@@ -196,9 +197,9 @@ final public class Game {
 		}
 		currentPlayer.drawCardFromStack(drawStack); 
 		
-		// Important: changes the current Player
-		currentPlayer = players[currentPlayerIndex + 1 % players.length];
-		currentPlayerIndex = currentPlayerIndex +1 % players.length;  
+		// Important: change the current Player
+		currentPlayerIndex = currentPlayerIndex +1 % players.length;
+		currentPlayer = players[currentPlayerIndex];
 	}
 	
 	/* Method to get out current Players chosen card 
@@ -208,16 +209,60 @@ final public class Game {
 		return getCurrentPlayer().getPlayerCard(choice);
 	}
 	
-	/* Method to get declaredCardType
+	// Method to get declaredCardType
 	public Type getDeclaredType(){
-		return this.declaredType;
+		return Game.declaredType;
 	}
 	
-	Method for when DeclaredType=="SIEBEN"
-		for(int i=2;declaredType==7;i--;){
-			currentPlayer.drawCardFromStack(drawStack);
+	// Method to submit our chosen card 
+	public void submitCard (Card card, Suit selectedSuit) {
+		
+		if (!card.matches(declaredCard)) {
+			if (card.getType() == Type.UNTER) {
+				
+				declaredSuit = card.getSuit();
+				declaredType = card.getType();
+			}
+			
+			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
 		}
-	*/
+		
+		/* TODO: remove card from the currentPlayer's hand */
+		
+		if (currentPlayer.hasEmptyHand()) {
+			/* TODO: For our UI-Team: implement functionality top tell our player that he has won the game !!! */
+		}
+		
+		/* TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement*/
+		
+		/* TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
+		 *       - add card to our putStack */
+		
+		/* TODO: - increment our current Player like in submitDraw (just copy it) */
+		
+		/* TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
+		 * 
+		 * TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
+		
+		if (card.getType() == Type.ASS) {
+			
+			currentPlayerIndex = currentPlayerIndex - 1 % players.length; 
+			
+			if (currentPlayerIndex == -1) {
+				 currentPlayerIndex = players.length -1;
+			}
+			
+			currentPlayer = players[currentPlayerIndex]; 
+		}
+		
+		// Our selectedSuit has been selected by the player 
+		if (card.getType() == Type.UNTER) {
+			declaredSuit = selectedSuit; 
+		}
+	
+	}
+	
+	
 }
 
 /* Rules of the game: 
