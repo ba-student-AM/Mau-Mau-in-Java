@@ -46,6 +46,7 @@ public class Player {
         this.hand.addCard(stack.drawNthCard(index));
         stack.removeCardIndex(index);
     }
+    
     public void putCardOnStack(CardStack stack, Card card) {
       this.hand.removeCard(card);
         stack.addCard(card);
