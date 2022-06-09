@@ -67,9 +67,4 @@ public class Player {
     	return this.getHand().isEmpty();
     }
 
-    // Method to check if our Hand is empty
-    public boolean hasEmptyHand() {
-    	return this.getHand().isEmpty();
-    }
-
 }
