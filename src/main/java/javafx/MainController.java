@@ -26,7 +26,9 @@ import javafx.scene.text.Text;
 
 public class MainController {
   @FXML
-  private ImageView currentCard;
+  private ImageView putStack;
+  @FXML
+  private ImageView drawStack;
   @FXML
   private Text currentPlayer;
   @FXML
@@ -62,7 +64,7 @@ public class MainController {
   private void initializeGame () throws FileNotFoundException {
 		Game.startGame();
 		Card topCard_drawStack = Game.getDeclaredCard();
-		currentCard.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
+		putStack.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
 		setCurrentPlayer();
     coverCards();
   }
@@ -90,6 +92,7 @@ public class MainController {
       imageView.setImage(new Image(new FileInputStream(Game.getCurrentPlayer().getHand().drawNthCard(i).getImagePath())));
       imageView.setPreserveRatio(true);
       imageView.setFitWidth(100);
+
       int finalI = i;
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override
@@ -102,30 +105,60 @@ public class MainController {
           event.consume();
         }
       });
+
       handCards.getChildren().add(imageView);
     }
+
     covered = false;
     //TODO: enable playCard() while uncovered
   }
+
   @FXML
   private void drawCard() throws FileNotFoundException {
+
+    // TODO: Fix the exception when the drawStack and the putStack are empty at the same time
+
     if(!covered) {
       Game.submitDraw();
       System.out.println("draw");
-      uncoverCards();
-      coverCards();
+      endTurn();
     }
   }
+
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
-      if (Game.getDeclaredCard().getSuit() == card.getSuit() || Game.getDeclaredCard().getType() == card.getType()) {  //TODO: does not work with Card.machtes(Card)
+      if(Game.getDeclaredCard().matches(card)) {
         System.out.println("Card matches!");
         Game.submitCard(card);
-        uncoverCards();
+
+        // update putStack Card
+        putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
+
+        if (!Game.getCurrentPlayer().getHand().isEmpty()) {
+          endTurn();
+        } else {
+          endGame();
+        }
       } else {
-        System.out.println("Card does not match");
+        System.out.println("Card does not match!");
       }
     }
+  }
+
+  private void endTurn() throws FileNotFoundException {
+    Game.setCurrentPlayerNext();
+    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
+    setCurrentPlayer();
+    coverCards();
+  }
+
+  private void endGame() throws FileNotFoundException {
+    System.out.println("Game Over! Winner: " + Game.getCurrentPlayer().getName());
+    // TODO: Tell the user that the game is over in the GUI
+    coverCards();
+    drawStack.disableProperty().set(true);
+    btnNextPlayer.disableProperty().set(true);
+    playTime.stop();
   }
 
   private void startTimer() {
@@ -142,9 +175,7 @@ public class MainController {
   // handle Buttons in the scene
   @FXML
   private void handleNewGame() throws IOException {
-    // TODO: function to start a new game (in NewGame window?)
     // TODO: if running: ask if you want to start a new game / save the current game
-    // needed: boolean to check if game is running
 		if (playTime != null) {
 			playTime.pause();
 		}
@@ -153,8 +184,11 @@ public class MainController {
 
   @FXML
   private void handleBtnNextPlayer() throws IOException {
-    // TODO: function to switch to next player
-    uncoverCards();
+    if (!covered) {
+      coverCards();
+    } else {    
+      uncoverCards();
+    }
   }
 
 	// set Text in the GUI
@@ -171,7 +205,7 @@ public class MainController {
 
   @FXML
   private void handleMenuTest() throws FileNotFoundException {
-    //currentCard.setImage(new Image("https://cataas.com/cat/says/hello%20world!"));
+    //putStack.setImage(new Image("https://cataas.com/cat/says/hello%20world!"));
     Game.printStatus();
   }
 

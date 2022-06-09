@@ -72,14 +72,6 @@ final public class Game {
 		int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, getPlayerCount());
 		setCurrentPlayerIndex(randomPlayerIndex);
     currentPlayer = players[currentPlayerIndex];
-		
-		// TODO: create the round structure;
-		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
-		// while (getWinningPlayer() == null) {
-		// } 
-		
-		// TODO: end the game --> see above (MainController)
-		// endGame();
 	}
 
   public static void printStatus(){
@@ -183,29 +175,29 @@ final public class Game {
 	
 	// Method to get declaredCard 
 	public static Suit getDeclaredSuit() {
-		return declaredSuit; 
+		return declaredSuit;
 	}
 	
 	// Method for when a player draws another Card 
 	public static void submitDraw() {
-		
-		if (drawStack.isEmpty()) {
+		if (drawStack.isEmpty() && !putStack.isEmpty()) {
 			putStack.moveAllCards(drawStack); //TODO: leave putStack TopCard on putStack
 			drawStack.shuffle();
+
 			putStack.addCard(drawStack.getTopCard());
-      drawStack.removeCardIndex(drawStack.getTopCardIndex());
+			drawStack.removeCard(drawStack.getTopCard());
 			declaredCard = getDeclaredCard();
+
 		}
-		currentPlayer.drawCardFromStack(drawStack); 
+		
+		getCurrentPlayer().drawCardFromStack(drawStack);
 		
 		// Important: change the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
-		currentPlayerIndex = currentPlayerIndex +1 % players.length;
-		currentPlayer = players[currentPlayerIndex];
 	}
+
   /* Method to get out current Players chosen card
    * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
   public Card getPlayerChoice (int choice) {
-
     return getCurrentPlayer().getPlayerCard(choice);
   }
 	
@@ -217,52 +209,43 @@ final public class Game {
 	// Method to submit our chosen card
 	public static void submitCard(Card card) {  //temporary removed 2nd parameter: Suit selectedSuit
 
-		if (!card.matches(declaredCard)) {
-			if (card.getType() == Type.UNTER) {
+		// TODO: remove card from the currentPlayer's hand
+
+		// TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
+		//       - add card to our putStack
+
+		switch (card.getType()) {
+
+			// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+			case SIEBEN:
+				System.out.println("SIEBEN");
+				break;
+
+			// TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
+			case ACHT:
+				System.out.println("ACHT");
+				break;
+
+			// TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement
+			case UNTER:
+				System.out.println("UNTER");
 
 				declaredSuit = card.getSuit();
 				declaredType = card.getType();
-			}
+				break;
 
 			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
+			default:
+				// do nothing, card has no special action
+				System.out.println("No special card action");
+				break;
 		}
 
-		/* TODO: remove card from the currentPlayer's hand */
-
-		if (currentPlayer.hasEmptyHand()) {
-			/* TODO: For our UI-Team: implement functionality to tell our player that he has won the game !!! */
-		}
-
-		/* TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement*/
-
-		/* TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
-		 *       - add card to our putStack */
-
-		/* TODO: - increment our current Player like in submitDraw (just copy it) */
-
-		/* TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
-		 *
-		 * TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
-
-		if (card.getType() == Type.ASS) {
-
-			currentPlayerIndex = currentPlayerIndex - 1 % players.length;
-
-			if (currentPlayerIndex == -1) {
-				 currentPlayerIndex = players.length -1;
-			}
-
-			currentPlayer = players[currentPlayerIndex];
-		}
-
-		// Our selectedSuit has been selected by the player
-		if (card.getType() == Type.UNTER) {
-			//declaredSuit = selectedSuit;
-		}
-
+		// TODO: pick up the right card from the currentPlayer's hand and add it to our putStack
+		// sometimes a wrong card is picked and cards are doubled.
+		getCurrentPlayer().putCardOnStack(putStack, card);
+		declaredCard = card;
 	}
-
-
 }
 
 /* Rules of the game: 
