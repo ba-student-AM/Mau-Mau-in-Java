@@ -63,7 +63,7 @@ public class MainController {
 		Game.startGame();
 		Card topCard_drawStack = Game.getDeclaredCard();
 		currentCard.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
-		currentPlayer.setText(Game.getPlayers()[0].getName());
+		setCurrentPlayer();
     coverCards();
   }
 
