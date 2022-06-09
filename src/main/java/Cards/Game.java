@@ -68,6 +68,7 @@ final public class Game {
 
 		// TODO: Randomize who starts the game random(0...player.length)
 		setCurrentPlayerIndex(currentPlayerIndex);
+    currentPlayer = players[currentPlayerIndex];
 		
 		// TODO: create the round structure;
 		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
@@ -76,12 +77,16 @@ final public class Game {
 		
 		// TODO: end the game --> see above (MainController)
 		// endGame();
-		
-		System.out.println("putStack topCard is " + declaredCard);
-		System.out.println("putStack has " + putStack.size() + " cards.");
-		System.out.println("drawStack topCard is " + drawStack.getTopCard());
-		System.out.println("drawStack has " + drawStack.size() + " cards.");
 	}
+
+  public static void printStatus(){
+    System.out.println("putStack has " + putStack.size() + " cards.");
+    System.out.println("drawStack has " + drawStack.size() + " cards.");
+    System.out.println("declaredCard is " + declaredCard.toString());
+    for (int i = 0; i < Game.getPlayerCount(); i++){
+      System.out.println("Player " + Game.getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
+    }
+  }
 	
 	// Method to give out Cards to players
 	public static void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
@@ -90,11 +95,6 @@ final public class Game {
 			for (int j = 0; j < NUM_INITIAL_CARDS; j++) {
 				players[i].drawCardFromStack(drawStack);
 			}
-		}
-		//print out the cards in the players hands
-		for (int i = 0; i < players.length; i++) {
-			System.out.println(players[i].getName() + " has " + players[i].getHand().size() + " cards.");
-			System.out.println("drawStack has " + drawStack.size() + " cards.");
 		}
 	}
 
@@ -169,17 +169,24 @@ final public class Game {
 	public static void submitDraw() {
 		
 		if (drawStack.isEmpty()) {
-			putStack.moveAllCards(drawStack);
+			putStack.moveAllCards(drawStack); //TODO: leave putStack TopCard on putStack
 			drawStack.shuffle();
 			putStack.addCard(drawStack.getTopCard());
+      drawStack.removeCardIndex(drawStack.getTopCardIndex());
 			declaredCard = getDeclaredCard();
 		}
 		currentPlayer.drawCardFromStack(drawStack); 
 		
-		// Important: changes the current Player
-		currentPlayer = players[currentPlayerIndex + 1 % players.length];
-		currentPlayerIndex = currentPlayerIndex +1 % players.length;  
+		// Important: changes the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
+      currentPlayer = players[currentPlayerIndex + 1 % players.length];
+      currentPlayerIndex = currentPlayerIndex +1 % players.length;
 	}
+  public static void submitPut(Card card){
+//    putStack.addCard(card);                           //dosnt work
+//    currentPlayer.putCardOnStack(putStack, card);
+//    currentPlayer = players[currentPlayerIndex + 1 % players.length];
+//    currentPlayerIndex = currentPlayerIndex +1 % players.length;
+  }
 	
 	/* Method to get declaredCardType
 	public Type getDeclaredType(){

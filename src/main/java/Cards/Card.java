@@ -66,8 +66,6 @@ public class Card {
 		return this.suit == othercard.suit || this.type == othercard.type;
 	}
 	public String getImagePath() {
-//		String image = "src/main/resources/card-img/" + this.toString() + ".png";
-//		File file = new File(image);
-		return "src/main/resources/card_img/" + blatt + "/" + suit + "-" + type + ".png";
+		return "src/main/resources/card_img/" + this.blatt + "/" + this.suit + "-" + this.type + ".png";
 	}
 }

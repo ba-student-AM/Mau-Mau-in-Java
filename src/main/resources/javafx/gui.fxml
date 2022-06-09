@@ -143,9 +143,9 @@
                      </image>
                   </ImageView>
                   <Region HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="deckCards" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="deckCards" fitWidth="120.0" onMouseClicked="#drawCard" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card_img/standard_blatt/1024px-Card_back_03.svg.png" />
+                        <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
