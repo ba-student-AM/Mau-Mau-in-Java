@@ -14,7 +14,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Cards.Card;
-import Cards.CardStack;
 import Cards.Game;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,6 +37,7 @@ public class MainController {
   private HBox handCards;
 
 	private GameTimer playTime;
+  private Boolean covered = true;
 
 
 	// executed on scene loading
@@ -76,7 +76,8 @@ public class MainController {
       imageView.setPreserveRatio(true);
       imageView.setFitWidth(100);
       handCards.getChildren().add(imageView);
-      //TODO: disable playCard() draw() while covered
+      covered = true;
+      //TODO: disable playCard() while covered
     }
     //handCards.getChildren().add(new ImageView().setImage(Image.(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
   }
@@ -94,7 +95,7 @@ public class MainController {
         @Override
         public void handle(MouseEvent event) {
           try {
-            putCard(Game.getCurrentPlayer().getHand().drawNthCard(finalI));
+            playCard(Game.getCurrentPlayer().getHand().drawNthCard(finalI));
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
@@ -103,22 +104,27 @@ public class MainController {
       });
       handCards.getChildren().add(imageView);
     }
-    //TODO: enable playCard() and draw() while uncovered
+    covered = false;
+    //TODO: enable playCard() while uncovered
   }
   @FXML
   private void drawCard() throws FileNotFoundException {
-    Game.submitDraw();
-    System.out.println("draw");
-    uncoverCards();
-    coverCards();
-  }
-  private void putCard(Card card) throws FileNotFoundException {
-    if(Game.getDeclaredCard().getSuit() == card.getSuit() || Game.getDeclaredCard().getType() == card.getType()) {  //TODO: does not work with Card.machtes(Card)
-      Game.submitPut(card);
+    if(!covered) {
+      Game.submitDraw();
+      System.out.println("draw");
       uncoverCards();
+      coverCards();
     }
-    else {
-      System.out.println("Card does not match");
+  }
+  private void playCard(Card card) throws FileNotFoundException {
+    if(!covered) {
+      if (Game.getDeclaredCard().getSuit() == card.getSuit() || Game.getDeclaredCard().getType() == card.getType()) {  //TODO: does not work with Card.machtes(Card)
+        System.out.println("Card matches!");
+        Game.submitCard(card);
+        uncoverCards();
+      } else {
+        System.out.println("Card does not match");
+      }
     }
   }
 
@@ -133,7 +139,7 @@ public class MainController {
     System.exit(0);
   }
 
-  // (re)start the game
+  // handle Buttons in the scene
   @FXML
   private void handleNewGame() throws IOException {
     // TODO: function to start a new game (in NewGame window?)
@@ -151,14 +157,15 @@ public class MainController {
     uncoverCards();
   }
 
-	// set playtime in the gui
+	// set Text in the GUI
   @FXML
   public void setPlayTime(String text) {
     timerPlayTime.setText(text);
   }
 
   @FXML
-  public void setCurrentPlayer(String text) {
+  public void setCurrentPlayer() {
+    String text = Game.getCurrentPlayerName();
     currentPlayer.setText(text);
   }
 

@@ -1,12 +1,13 @@
 package Cards;
 
 import java.io.FileNotFoundException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Arved Meyer
  * @author John Kühnel
  * @author Tobias Hering
- * @version 0.3.3
+ * @version 0.4.0
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
@@ -19,7 +20,8 @@ final public class Game {
 	private static Player[] players;
 
 	private static Card declaredCard; // Card that is on the top of putStack during Gameplay
-	private static Suit declaredSuit; 
+	private static Type declaredType;
+	private static Suit declaredSuit;
 	private static CardStack drawStack;
 	private static CardStack putStack;
 
@@ -27,7 +29,7 @@ final public class Game {
 	
 
 	// Getter and setter for game state
-	public static boolean	isRunning() {
+	public static boolean isRunning() {
 		return isRunning;
 	}
 
@@ -66,8 +68,9 @@ final public class Game {
 		drawStack.removeCardIndex(drawStack.getTopCardIndex());
 		declaredSuit = declaredCard.getSuit();
 
-		// TODO: Randomize who starts the game random(0...player.length)
-		setCurrentPlayerIndex(currentPlayerIndex);
+		// Randomize the current player on start
+		int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, getPlayerCount());
+		setCurrentPlayerIndex(randomPlayerIndex);
     currentPlayer = players[currentPlayerIndex];
 		
 		// TODO: create the round structure;
@@ -128,7 +131,7 @@ final public class Game {
 	}
 
 	public static String getCurrentPlayerName() {
-		return players[currentPlayerIndex].getName();
+		return getCurrentPlayer().getName();
 	}
 
 	public static int getCurrentPlayerIndex() {
@@ -144,20 +147,38 @@ final public class Game {
 		return putStack.getTopCard();
 	}
 
+	// Method to change the current player
+	public static void setCurrentPlayerNext() {
+		currentPlayerIndex++;
+		if (currentPlayerIndex >= players.length) {
+			setCurrentPlayerIndex(0);
+		}
+	}
+
+	public static void setCurrentPlayerPrev() {
+		currentPlayerIndex--;
+		if (currentPlayerIndex < 0) {
+			setCurrentPlayerIndex(players.length - 1);
+		}
+	}
+
 	// Method to get our winner
 	public static Player getWinningPlayer() {
-		// TODO: Iterate through players and check if their hand is empty. If yes, return the Player;
-		// TODO: OR check at the end of every round if the hand of currentPlayer isEmpty. If YES, return the winning Player --> end game;
+
 		if (currentPlayer.getHand().isEmpty()) {
 			return currentPlayer;
 		}
 		return null;
 	}
 
-	// Method to end our game
-	public static void endGame() {
-		// TODO: Get our winning player, ...
-		getWinningPlayer();
+	// Method to check if our game is over
+	public boolean isGameOver() {
+		for (Player player: players) {
+			if (player.hasEmptyHand()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	// Method to get declaredCard 
@@ -177,27 +198,71 @@ final public class Game {
 		}
 		currentPlayer.drawCardFromStack(drawStack); 
 		
-		// Important: changes the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
-      currentPlayer = players[currentPlayerIndex + 1 % players.length];
-      currentPlayerIndex = currentPlayerIndex +1 % players.length;
+		// Important: change the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
+		currentPlayerIndex = currentPlayerIndex +1 % players.length;
+		currentPlayer = players[currentPlayerIndex];
 	}
-  public static void submitPut(Card card){
-//    putStack.addCard(card);                           //dosnt work
-//    currentPlayer.putCardOnStack(putStack, card);
-//    currentPlayer = players[currentPlayerIndex + 1 % players.length];
-//    currentPlayerIndex = currentPlayerIndex +1 % players.length;
+  /* Method to get out current Players chosen card
+   * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
+  public Card getPlayerChoice (int choice) {
+
+    return getCurrentPlayer().getPlayerCard(choice);
   }
 	
-	/* Method to get declaredCardType
+	// Method to get declaredCardType
 	public Type getDeclaredType(){
-		return this.declaredType;
+		return Game.declaredType;
 	}
 	
-	Method for when DeclaredType=="SIEBEN"
-		for(int i=2;declaredType==7;i--;){
-			currentPlayer.drawCardFromStack(drawStack);
+	// Method to submit our chosen card
+	public static void submitCard(Card card) {  //temporary removed 2nd parameter: Suit selectedSuit
+
+		if (!card.matches(declaredCard)) {
+			if (card.getType() == Type.UNTER) {
+
+				declaredSuit = card.getSuit();
+				declaredType = card.getType();
+			}
+
+			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
 		}
-	*/
+
+		/* TODO: remove card from the currentPlayer's hand */
+
+		if (currentPlayer.hasEmptyHand()) {
+			/* TODO: For our UI-Team: implement functionality to tell our player that he has won the game !!! */
+		}
+
+		/* TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement*/
+
+		/* TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
+		 *       - add card to our putStack */
+
+		/* TODO: - increment our current Player like in submitDraw (just copy it) */
+
+		/* TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+		 *
+		 * TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
+
+		if (card.getType() == Type.ASS) {
+
+			currentPlayerIndex = currentPlayerIndex - 1 % players.length;
+
+			if (currentPlayerIndex == -1) {
+				 currentPlayerIndex = players.length -1;
+			}
+
+			currentPlayer = players[currentPlayerIndex];
+		}
+
+		// Our selectedSuit has been selected by the player
+		if (card.getType() == Type.UNTER) {
+			//declaredSuit = selectedSuit;
+		}
+
+	}
+
+
 }
 
 /* Rules of the game: 

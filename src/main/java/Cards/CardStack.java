@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Arved Meyer
  * @author Tobias Hering
- * @version 1.2.0
+ * @version 1.2.1
  * @comment Class to Model a STACK of CARDS 
  */
 
@@ -85,7 +85,7 @@ public class CardStack {
 	
 	// Method to check if our stack is empty 
 	public boolean isEmpty() {
-		return (size() == 0) ? true : false;
+		return this.cards.isEmpty();
 	}
 	
 	// Method to get the size of our stack 

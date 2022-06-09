@@ -2,7 +2,7 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.2.0
+ * @version 0.3.0
  * @comment Class to model a player in the game
  */
 
@@ -60,6 +60,11 @@ public class Player {
     // Method to get the players selected Card 
     public Card getPlayerCard(int n) {
     	return hand.drawNthCard(n);
+    }
+
+    // Method to check if our Hand is empty
+    public boolean hasEmptyHand() {
+    	return this.getHand().isEmpty();
     }
 
 }
