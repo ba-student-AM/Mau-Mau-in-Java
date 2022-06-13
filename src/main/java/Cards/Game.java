@@ -224,6 +224,7 @@ final public class Game {
 				declaredType = card.getType();
 			}
 			
+			System.out.println("Ungültiger Spielzug, entweder gleiche Farbe" + declaredSuit + "oder gleicher Typ" + declaredType);
 			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
 		}
 		
@@ -240,9 +241,17 @@ final public class Game {
 		
 		/* TODO: - increment our current Player like in submitDraw (just copy it) */
 		
-		/* TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
-		 * 
-		 * TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
+		// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
+		if(card.getType()==Type.SIEBEN){
+			currentPlayerIndex=currentPlayerIndex +1 % players.length;
+			submitDraw();
+			submitDraw();
+		}
+		 
+		 /* TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
+		 if(card.getType()==Type.ACHT){
+			 currentPlayerIndex = currentPlayerIndex + 2 % players.length;
+		 }
 		
 		if (card.getType() == Type.ASS) {
 			
