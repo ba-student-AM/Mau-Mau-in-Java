@@ -32,6 +32,8 @@ public class MainController {
   @FXML
   private Text currentPlayer;
   @FXML
+  private Text gameStatus;
+  @FXML
   private Text timerPlayTime;
   @FXML
   private Button btnNextPlayer;
@@ -58,6 +60,7 @@ public class MainController {
     } catch (Exception e) {
       //TODO: handle exception
       System.out.println("Game is not initialized yet! Start a new game!");
+      setGameStatus("Das Spiel wurde noch nicht initialisiert!");
     }
   }
 
@@ -65,7 +68,9 @@ public class MainController {
 		Game.startGame();
 		Card topCard_drawStack = Game.getDeclaredCard();
 		putStack.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
-		setCurrentPlayer();
+
+    setCurrentPlayerName();
+    setGameStatus("Neues Spiel - " + Game.getCurrentPlayerName() + " beginnt!");
     coverCards();
   }
 
@@ -120,7 +125,8 @@ public class MainController {
 
     if(!covered) {
       Game.submitDraw();
-      System.out.println("draw");
+      setGameStatus(Game.getCurrentPlayerName() + " hat eine Karte vom Stapel gezogen!");
+
       endTurn();
     }
   }
@@ -128,32 +134,33 @@ public class MainController {
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
       if(Game.getDeclaredCard().matches(card)) {
-        System.out.println("Card matches!");
         Game.submitCard(card);
 
         // update putStack Card
         putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
 
+        // check if a player wins
         if (!Game.getCurrentPlayer().getHand().isEmpty()) {
+          setGameStatus(Game.getCurrentPlayerName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
           endTurn();
         } else {
           endGame();
         }
       } else {
-        System.out.println("Card does not match!");
+        setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
       }
     }
   }
 
   private void endTurn() throws FileNotFoundException {
     Game.setCurrentPlayerNext();
+    setCurrentPlayerName();
     System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
-    setCurrentPlayer();
     coverCards();
   }
 
   private void endGame() throws FileNotFoundException {
-    System.out.println("Game Over! Winner: " + Game.getCurrentPlayer().getName());
+    setGameStatus(Game.getCurrentPlayerName() + " hat gewonnen!");
     // TODO: Tell the user that the game is over in the GUI
     coverCards();
     drawStack.disableProperty().set(true);
@@ -198,9 +205,14 @@ public class MainController {
   }
 
   @FXML
-  public void setCurrentPlayer() {
+  public void setCurrentPlayerName() {
     String text = Game.getCurrentPlayerName();
     currentPlayer.setText(text);
+  }
+
+  @FXML
+  public void setGameStatus(String text) {
+    gameStatus.setText(text);
   }
 
   @FXML

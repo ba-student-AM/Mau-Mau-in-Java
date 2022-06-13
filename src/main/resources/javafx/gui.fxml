@@ -123,18 +123,14 @@
                            </children>
                         </VBox>
                         <Separator prefWidth="200.0" />
-                        <HBox VBox.vgrow="ALWAYS">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
+                        <HBox>
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler " />
-                              <Text fx:id="currentPlayer" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$SPIELER" />
-                              <Text layoutX="210.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" ist dran" />
+                              <Text layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aktiver Spieler: " />
+                              <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="\$Spieler" />
                            </children>
                         </HBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$Spielstatus (Bsp: Spieler xyz ist an der Reihe.)" />
-                        <Button fx:id="btnNextPlayer" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Karten aufdecken" />
+                        <Text fx:id="gameStatus" strokeType="OUTSIDE" strokeWidth="0.0" text="\$Spielstatus" />
+                        <Button fx:id="btnNextPlayer" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Karten aufdecken" />
                      </children>
                   </VBox>
                   <Region layoutX="373.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
