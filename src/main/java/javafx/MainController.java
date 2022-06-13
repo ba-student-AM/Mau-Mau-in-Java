@@ -20,6 +20,7 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -77,8 +78,7 @@ public class MainController {
 
   private void initializeGame () throws FileNotFoundException {
 		Game.startGame();
-		Card topCard_drawStack = Game.getDeclaredCard();
-		putStack.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
+		putStack.setImage(new Image(new FileInputStream(Game.getDeclaredCard().getImagePath())));
 
     setCurrentPlayerName();
     setGameStatus("Neues Spiel - " + Game.getCurrentPlayerName() + " beginnt!");
@@ -86,6 +86,7 @@ public class MainController {
   }
 
   private void coverCards() throws FileNotFoundException {
+    drawStack.setCursor(Cursor.DEFAULT);
     btnNextPlayer.setDisable(false);
     handCards.getChildren().clear();
     for (int i = 0; i < Game.getCurrentPlayer().getHand().size(); i++) {
@@ -93,21 +94,22 @@ public class MainController {
       imageView.setImage(new Image(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
       imageView.setPreserveRatio(true);
       imageView.setFitWidth(100);
+      imageView.setCursor(Cursor.DEFAULT);
       handCards.getChildren().add(imageView);
       covered = true;
-      //TODO: disable playCard() while covered
     }
     //handCards.getChildren().add(new ImageView().setImage(Image.(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
   }
 
   private void uncoverCards() throws FileNotFoundException {
+    drawStack.setCursor(Cursor.HAND);
     btnNextPlayer.setDisable(true);
     handCards.getChildren().clear();
     for (int i = 0; i < Game.getCurrentPlayer().getHand().size(); i++) {
       ImageView imageView = new ImageView();
       imageView.setImage(new Image(new FileInputStream(Game.getCurrentPlayer().getHand().drawNthCard(i).getImagePath())));
       imageView.setPreserveRatio(true);
-      imageView.setFitWidth(100);
+      imageView.setFitWidth(100);  //TODO: find good size for cards so it doesnt get eaten
 
       int finalI = i;
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -116,6 +118,7 @@ public class MainController {
           try {
             Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
             if (!clickedCard.matches(Game.getDeclaredCard())) {
+              setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
               ColorAdjust darken = new ColorAdjust();
 
               Blend blend = new Blend(
@@ -124,8 +127,8 @@ public class MainController {
                 new ColorInput(
                   0,
                   0,
-                  100,
-                  imageView.getImage().getHeight(),
+                  imageView.getFitWidth(),
+                  140,
                   Color.RED
                 )
               );
@@ -147,7 +150,9 @@ public class MainController {
               );
               timeline.play();
             }
-            else playCard(clickedCard);
+            else{
+              playCard(clickedCard);
+            }
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
@@ -159,6 +164,7 @@ public class MainController {
         public void handle(MouseEvent event) {
           imageView.setScaleX(1.3);
           imageView.setScaleY(1.3);
+          imageView.setCursor(Cursor.HAND);
           event.consume();
         }
       });
@@ -175,7 +181,6 @@ public class MainController {
     }
 
     covered = false;
-    //TODO: enable playCard() while uncovered
   }
 
   @FXML
@@ -206,8 +211,6 @@ public class MainController {
         } else {
           endGame();
         }
-      } else {
-        setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
       }
     }
   }

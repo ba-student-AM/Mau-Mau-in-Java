@@ -145,7 +145,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="OPEN_HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                </children>
@@ -160,7 +160,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                   <ImageView fx:id="handCard_011" fitWidth="100.0" layoutX="192.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -168,7 +168,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                   <ImageView fx:id="handCard_0111" fitWidth="100.0" layoutX="252.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -176,7 +176,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                   <ImageView fx:id="handCard_01111" fitWidth="100.0" layoutX="312.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -184,7 +184,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                   <ImageView fx:id="handCard_011111" fitWidth="100.0" layoutX="372.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -192,7 +192,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                   <ImageView fx:id="handCard_0111111" fitWidth="100.0" layoutX="490.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -200,7 +200,7 @@
                         <Image url="@../card_img/standard_blatt/CARD-BACK.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
                </children>
