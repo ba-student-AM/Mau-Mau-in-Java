@@ -18,6 +18,7 @@ import Cards.Game;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,9 +31,9 @@ public class MainController {
   @FXML
   private ImageView drawStack;
   @FXML
-  private Text currentPlayer;
+  private Label currentPlayer;
   @FXML
-  private Text gameStatus;
+  private Label gameStatus;
   @FXML
   private Text timerPlayTime;
   @FXML
@@ -275,7 +276,6 @@ public class MainController {
     @Override
     public void run() {
       String playTime = toString();
-      // System.out.println(playTime);
       setPlayTime(playTime);
 
       seconds++;
