@@ -98,7 +98,7 @@ public class MainController {
       handCards.getChildren().add(imageView);
       covered = true;
     }
-    //handCards.getChildren().add(new ImageView().setImage(Image.(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
+      handCards.setSpacing((680 - 100* Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
   }
 
   private void uncoverCards() throws FileNotFoundException {
@@ -128,7 +128,7 @@ public class MainController {
                   0,
                   0,
                   imageView.getFitWidth(),
-                  140,
+                  imageView.getFitWidth()/ imageView.getImage().getWidth() * imageView.getImage().getHeight(),
                   Color.RED
                 )
               );
