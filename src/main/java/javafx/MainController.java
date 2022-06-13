@@ -98,13 +98,13 @@ public class MainController {
       handCards.getChildren().add(imageView);
       covered = true;
     }
-      handCards.setSpacing((680 - 100* Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
-  }
+      updateSpacing();  }
 
   private void uncoverCards() throws FileNotFoundException {
     drawStack.setCursor(Cursor.HAND);
     btnNextPlayer.setDisable(true);
     handCards.getChildren().clear();
+    updateSpacing();
     for (int i = 0; i < Game.getCurrentPlayer().getHand().size(); i++) {
       ImageView imageView = new ImageView();
       imageView.setImage(new Image(new FileInputStream(Game.getCurrentPlayer().getHand().drawNthCard(i).getImagePath())));
@@ -165,6 +165,7 @@ public class MainController {
           imageView.setScaleX(1.3);
           imageView.setScaleY(1.3);
           imageView.setCursor(Cursor.HAND);
+          imageView.setViewOrder(imageView.getViewOrder() - 2);
           event.consume();
         }
       });
@@ -173,6 +174,7 @@ public class MainController {
         public void handle(MouseEvent event) {
           imageView.setScaleX(1);
           imageView.setScaleY(1);
+          imageView.setViewOrder(imageView.getViewOrder() + 2);
           event.consume();
         }
       });
@@ -183,6 +185,12 @@ public class MainController {
     covered = false;
   }
 
+  private void updateSpacing() {
+    if(Game.getCurrentPlayer().getHand().size() > 5) {
+      handCards.setSpacing((680 - 100 * Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
+    }
+    else handCards.setSpacing(20);
+  }
   @FXML
   private void drawCard() throws FileNotFoundException {
 
