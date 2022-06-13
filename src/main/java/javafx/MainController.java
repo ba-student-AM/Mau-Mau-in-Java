@@ -15,15 +15,25 @@ import java.util.TimerTask;
 
 import Cards.Card;
 import Cards.Game;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class MainController {
   @FXML
@@ -104,10 +114,59 @@ public class MainController {
         @Override
         public void handle(MouseEvent event) {
           try {
-            playCard(Game.getCurrentPlayer().getHand().drawNthCard(finalI));
+            Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
+            if (!clickedCard.matches(Game.getDeclaredCard())) {
+              ColorAdjust darken = new ColorAdjust();
+
+              Blend blend = new Blend(
+                BlendMode.MULTIPLY,
+                darken,
+                new ColorInput(
+                  0,
+                  0,
+                  100,
+                  imageView.getImage().getHeight(),
+                  Color.RED
+                )
+              );
+              Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, evt -> {
+                  imageView.setEffect(blend);
+                  imageView.setCache(true);
+                  imageView.setCacheHint(CacheHint.SPEED);
+                }),
+                new KeyFrame(Duration.seconds(.1), evt -> {
+                  imageView.setEffect(null);
+                }),
+                new KeyFrame(Duration.seconds(.2), evt -> {
+                  imageView.setEffect(blend);
+                }),
+                new KeyFrame(Duration.seconds(.3), evt -> {
+                  imageView.setEffect(null);
+                })
+              );
+              timeline.play();
+            }
+            else playCard(clickedCard);
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
+          event.consume();
+        }
+      });
+      imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          imageView.setScaleX(1.3);
+          imageView.setScaleY(1.3);
+          event.consume();
+        }
+      });
+      imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          imageView.setScaleX(1);
+          imageView.setScaleY(1);
           event.consume();
         }
       });
@@ -276,6 +335,7 @@ public class MainController {
     @Override
     public void run() {
       String playTime = toString();
+      // System.out.println(playTime);
       setPlayTime(playTime);
 
       seconds++;
