@@ -1,5 +1,7 @@
 package Cards;
 
+import java.util.Objects;
+
 /**
  * @author Arved Meyer
  * @author Tobias Hering
@@ -45,20 +47,28 @@ public class Card {
 		return suit + "-" + type;
 	}
 	
-	// check if two Cards are equal (have identical attribute values)/ are both cards
-	@Override 
-	public boolean equals(Object other) {
-		
-		if (other instanceof Card) {
-			return true;
-		}
-		// cast Object other to Card and check if its attributes equal the Card it is compared to 
-		return this.suit == ((Card) other).suit && this.type == ((Card)other).type;
-	}
-	
 	// check if one Card matches another 
 	public boolean matches(Card othercard) {
 		return this.getSuit() == othercard.getSuit() || this.getType() == othercard.getType();
+	}
+
+	// Generate Hash-Code of the Card 
+	@Override
+	public int hashCode() {
+		return Objects.hash(blatt, suit, type);
+	}
+
+	// check if two Cards are equal (have identical attribute values)/ are both cards
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Card)) {
+			return false;
+		}
+		Card other = (Card) obj;
+		return Objects.equals(blatt, other.blatt) && suit == other.suit && type == other.type;
 	}
 
 	public String getImagePath() {
