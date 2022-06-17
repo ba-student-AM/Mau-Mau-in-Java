@@ -232,7 +232,7 @@ final public class Game {
 
 				declaredSuit = card.getSuit();
 				declaredType = card.getType();
-			}
+			
 			
 			System.out.println("Ungültiger Spielzug, entweder gleiche Farbe" + declaredSuit + "oder gleicher Typ" + declaredType);
 				break;
