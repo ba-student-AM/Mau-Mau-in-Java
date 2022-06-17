@@ -21,7 +21,7 @@ final public class Game {
 
 	private static Card declaredCard; // Card that is on the top of putStack during Gameplay
 	private static Type declaredType;
-	private static Suit declaredSuit; 
+	private static Suit declaredSuit;
 	private static CardStack drawStack;
 	private static CardStack putStack;
 
@@ -71,20 +71,17 @@ final public class Game {
 		// Randomize the current player on start
 		int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, getPlayerCount());
 		setCurrentPlayerIndex(randomPlayerIndex);
-		
-		// TODO: create the round structure;
-		// TODO: BUT: not in while --> MainController! otherwise: no javafx interaction!
-		// while (getWinningPlayer() == null) {
-		// } 
-		
-		// TODO: end the game --> see above (MainController)
-		// endGame();
-		
-		System.out.println("putStack topCard is " + declaredCard);
-		System.out.println("putStack has " + putStack.size() + " cards.");
-		System.out.println("drawStack topCard is " + drawStack.getTopCard());
-		System.out.println("drawStack has " + drawStack.size() + " cards.");
+    currentPlayer = players[currentPlayerIndex];
 	}
+
+  public static void printStatus(){
+    System.out.println("putStack has " + putStack.size() + " cards.");
+    System.out.println("drawStack has " + drawStack.size() + " cards.");
+    System.out.println("declaredCard is " + declaredCard.toString());
+    for (int i = 0; i < Game.getPlayerCount(); i++){
+      System.out.println("Player " + Game.getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
+    }
+  }
 	
 	// Method to give out Cards to players
 	public static void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
@@ -93,11 +90,6 @@ final public class Game {
 			for (int j = 0; j < NUM_INITIAL_CARDS; j++) {
 				players[i].drawCardFromStack(drawStack);
 			}
-		}
-		//print out the cards in the players hands
-		for (int i = 0; i < players.length; i++) {
-			System.out.println(players[i].getName() + " has " + players[i].getHand().size() + " cards.");
-			System.out.println("drawStack has " + drawStack.size() + " cards.");
 		}
 	}
 
@@ -164,14 +156,14 @@ final public class Game {
 
 	// Method to get our winner
 	public static Player getWinningPlayer() {
-		
+
 		if (currentPlayer.getHand().isEmpty()) {
 			return currentPlayer;
 		}
 		return null;
 	}
 
-	// Method to check if our game is over 
+	// Method to check if our game is over
 	public boolean isGameOver() {
 		for (Player player: players) {
 			if (player.hasEmptyHand()) {
@@ -183,49 +175,73 @@ final public class Game {
 	
 	// Method to get declaredCard 
 	public static Suit getDeclaredSuit() {
-		return declaredSuit; 
+		return declaredSuit;
 	}
 	
 	// Method for when a player draws another Card 
 	public static void submitDraw() {
-		
-		if (drawStack.isEmpty()) {
-			putStack.moveAllCards(drawStack);
+		if (drawStack.isEmpty() && !putStack.isEmpty()) {
+			putStack.moveAllCards(drawStack); //TODO: leave putStack TopCard on putStack
 			drawStack.shuffle();
+
 			putStack.addCard(drawStack.getTopCard());
+			drawStack.removeCard(drawStack.getTopCard());
 			declaredCard = getDeclaredCard();
+
 		}
-		currentPlayer.drawCardFromStack(drawStack); 
 		
-		// Important: change the current Player
-		currentPlayerIndex = currentPlayerIndex +1 % players.length;
-		currentPlayer = players[currentPlayerIndex];
-	}
-	
-	/* Method to get out current Players chosen card 
-	 * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
-	public Card getPlayerChoice (int choice) {
+		getCurrentPlayer().drawCardFromStack(drawStack);
 		
-		return getCurrentPlayer().getPlayerCard(choice);
+		// Important: change the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
 	}
+
+  /* Method to get out current Players chosen card
+   * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
+  public Card getPlayerChoice (int choice) {
+    return getCurrentPlayer().getPlayerCard(choice);
+  }
 	
 	// Method to get declaredCardType
 	public Type getDeclaredType(){
 		return Game.declaredType;
 	}
 	
-	// Method to submit our chosen card 
-	public void submitCard (Card card, Suit selectedSuit) {
-		
-		if (!card.matches(declaredCard)) {
-			if (card.getType() == Type.UNTER) {
-				
+	// Method to submit our chosen card
+	public static void submitCard(Card card) {  //temporary removed 2nd parameter: Suit selectedSuit
+
+		// TODO: remove card from the currentPlayer's hand
+
+		// TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
+		//       - add card to our putStack
+
+		switch (card.getType()) {
+
+			// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+			case SIEBEN:
+				System.out.println("SIEBEN");
+				break;
+
+			// TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
+			case ACHT:
+				System.out.println("ACHT");
+				break;
+
+			// TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement
+			case UNTER:
+				System.out.println("UNTER");
+
 				declaredSuit = card.getSuit();
 				declaredType = card.getType();
 			}
 			
 			System.out.println("Ungültiger Spielzug, entweder gleiche Farbe" + declaredSuit + "oder gleicher Typ" + declaredType);
+				break;
+
 			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
+			default:
+				// do nothing, card has no special action
+				System.out.println("No special card action");
+				break;
 		}
 		
 		/* TODO: remove card from the currentPlayer's hand */
@@ -269,9 +285,12 @@ final public class Game {
 			declaredSuit = selectedSuit; 
 		}
 	
+
+		// TODO: pick up the right card from the currentPlayer's hand and add it to our putStack
+		// sometimes a wrong card is picked and cards are doubled.
+		getCurrentPlayer().putCardOnStack(putStack, card);
+		declaredCard = card;
 	}
-	
-	
 }
 
 /* Rules of the game: 

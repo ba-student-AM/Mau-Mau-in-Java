@@ -50,7 +50,7 @@ public class Card {
 	public boolean equals(Object other) {
 		
 		if (other instanceof Card) {
-			return true; 
+			return true;
 		}
 		// cast Object other to Card and check if its attributes equal the Card it is compared to 
 		return this.suit == ((Card) other).suit && this.type == ((Card)other).type;
@@ -58,16 +58,10 @@ public class Card {
 	
 	// check if one Card matches another 
 	public boolean matches(Card othercard) {
-
-		if (othercard instanceof Card) {
-			return true; 
-		}
-
-		return this.suit == othercard.suit || this.type == othercard.type;
+		return this.getSuit() == othercard.getSuit() || this.getType() == othercard.getType();
 	}
+
 	public String getImagePath() {
-//		String image = "src/main/resources/card-img/" + this.toString() + ".png";
-//		File file = new File(image);
-		return "src/main/resources/card_img/" + blatt + "/" + suit + "-" + type + ".png";
+		return "src/main/resources/card_img/" + this.blatt + "/" + this.suit + "-" + this.type + ".png";
 	}
 }

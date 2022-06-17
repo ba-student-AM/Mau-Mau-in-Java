@@ -41,11 +41,15 @@ public class Player {
     }
 
     // Method to draw a Card from a specified stack
-    public Card drawCardFromStack(CardStack stack) {
-        Card card = stack.getTopCard();
-        this.hand.addCard(card);
-        stack.removeCard(card);
-        return card;
+    public void drawCardFromStack(CardStack stack) {
+        int index = stack.getTopCardIndex();
+        this.hand.addCard(stack.drawNthCard(index));
+        stack.removeCardIndex(index);
+    }
+    
+    public void putCardOnStack(CardStack stack, Card card) {
+      this.hand.removeCard(card);
+        stack.addCard(card);
     }
 
     // Method to test if a player has a matching card 
