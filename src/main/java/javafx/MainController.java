@@ -15,14 +15,26 @@ import java.util.TimerTask;
 
 import Cards.Card;
 import Cards.Game;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.CacheHint;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class MainController {
   @FXML
@@ -30,7 +42,9 @@ public class MainController {
   @FXML
   private ImageView drawStack;
   @FXML
-  private Text currentPlayer;
+  private Label currentPlayer;
+  @FXML
+  private Label gameStatus;
   @FXML
   private Text timerPlayTime;
   @FXML
@@ -58,18 +72,21 @@ public class MainController {
     } catch (Exception e) {
       //TODO: handle exception
       System.out.println("Game is not initialized yet! Start a new game!");
+      setGameStatus("Das Spiel wurde noch nicht initialisiert!");
     }
   }
 
   private void initializeGame () throws FileNotFoundException {
 		Game.startGame();
-		Card topCard_drawStack = Game.getDeclaredCard();
-		putStack.setImage(new Image(new FileInputStream(topCard_drawStack.getImagePath())));
-		setCurrentPlayer();
+		putStack.setImage(new Image(new FileInputStream(Game.getDeclaredCard().getImagePath())));
+
+    setCurrentPlayerName();
+    setGameStatus("Neues Spiel - " + Game.getCurrentPlayerName() + " beginnt!");
     coverCards();
   }
 
   private void coverCards() throws FileNotFoundException {
+    drawStack.setCursor(Cursor.DEFAULT);
     btnNextPlayer.setDisable(false);
     handCards.getChildren().clear();
     for (int i = 0; i < Game.getCurrentPlayer().getHand().size(); i++) {
@@ -77,31 +94,87 @@ public class MainController {
       imageView.setImage(new Image(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
       imageView.setPreserveRatio(true);
       imageView.setFitWidth(100);
+      imageView.setCursor(Cursor.DEFAULT);
       handCards.getChildren().add(imageView);
       covered = true;
-      //TODO: disable playCard() while covered
     }
-    //handCards.getChildren().add(new ImageView().setImage(Image.(new FileInputStream("src/main/resources/card_img/standard_blatt/CARD-BACK.png")));
-  }
+      updateSpacing();  }
 
   private void uncoverCards() throws FileNotFoundException {
+    drawStack.setCursor(Cursor.HAND);
     btnNextPlayer.setDisable(true);
     handCards.getChildren().clear();
+    updateSpacing();
     for (int i = 0; i < Game.getCurrentPlayer().getHand().size(); i++) {
       ImageView imageView = new ImageView();
       imageView.setImage(new Image(new FileInputStream(Game.getCurrentPlayer().getHand().drawNthCard(i).getImagePath())));
       imageView.setPreserveRatio(true);
-      imageView.setFitWidth(100);
+      imageView.setFitWidth(100);  //TODO: find good size for cards so it doesnt get eaten
 
       int finalI = i;
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
           try {
-            playCard(Game.getCurrentPlayer().getHand().drawNthCard(finalI));
+            Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
+            if (!clickedCard.matches(Game.getDeclaredCard())) {
+              setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
+              ColorAdjust darken = new ColorAdjust();
+
+              Blend blend = new Blend(
+                BlendMode.MULTIPLY,
+                darken,
+                new ColorInput(
+                  0,
+                  0,
+                  imageView.getFitWidth(),
+                  imageView.getFitWidth()/ imageView.getImage().getWidth() * imageView.getImage().getHeight(),
+                  Color.RED
+                )
+              );
+              Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, evt -> {
+                  imageView.setEffect(blend);
+                  imageView.setCache(true);
+                  imageView.setCacheHint(CacheHint.SPEED);
+                }),
+                new KeyFrame(Duration.seconds(.1), evt -> {
+                  imageView.setEffect(null);
+                }),
+                new KeyFrame(Duration.seconds(.2), evt -> {
+                  imageView.setEffect(blend);
+                }),
+                new KeyFrame(Duration.seconds(.3), evt -> {
+                  imageView.setEffect(null);
+                })
+              );
+              timeline.play();
+            }
+            else{
+              playCard(clickedCard);
+            }
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
+          event.consume();
+        }
+      });
+      imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          imageView.setScaleX(1.3);
+          imageView.setScaleY(1.3);
+          imageView.setCursor(Cursor.HAND);
+          imageView.setViewOrder(imageView.getViewOrder() - 2);
+          event.consume();
+        }
+      });
+      imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          imageView.setScaleX(1);
+          imageView.setScaleY(1);
+          imageView.setViewOrder(imageView.getViewOrder() + 2);
           event.consume();
         }
       });
@@ -110,9 +183,14 @@ public class MainController {
     }
 
     covered = false;
-    //TODO: enable playCard() while uncovered
   }
 
+  private void updateSpacing() {
+    if(Game.getCurrentPlayer().getHand().size() > 5) {
+      handCards.setSpacing((680 - 100 * Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
+    }
+    else handCards.setSpacing(20);
+  }
   @FXML
   private void drawCard() throws FileNotFoundException {
 
@@ -120,7 +198,8 @@ public class MainController {
 
     if(!covered) {
       Game.submitDraw();
-      System.out.println("draw");
+      setGameStatus(Game.getCurrentPlayerName() + " hat eine Karte vom Stapel gezogen!");
+
       endTurn();
     }
   }
@@ -128,32 +207,31 @@ public class MainController {
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
       if(Game.getDeclaredCard().matches(card)) {
-        System.out.println("Card matches!");
         Game.submitCard(card);
 
         // update putStack Card
         putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
 
+        // check if a player wins
         if (!Game.getCurrentPlayer().getHand().isEmpty()) {
+          setGameStatus(Game.getCurrentPlayerName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
           endTurn();
         } else {
           endGame();
         }
-      } else {
-        System.out.println("Card does not match!");
       }
     }
   }
 
   private void endTurn() throws FileNotFoundException {
     Game.setCurrentPlayerNext();
+    setCurrentPlayerName();
     System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
-    setCurrentPlayer();
     coverCards();
   }
 
   private void endGame() throws FileNotFoundException {
-    System.out.println("Game Over! Winner: " + Game.getCurrentPlayer().getName());
+    setGameStatus(Game.getCurrentPlayerName() + " hat gewonnen!");
     // TODO: Tell the user that the game is over in the GUI
     coverCards();
     drawStack.disableProperty().set(true);
@@ -198,9 +276,14 @@ public class MainController {
   }
 
   @FXML
-  public void setCurrentPlayer() {
+  public void setCurrentPlayerName() {
     String text = Game.getCurrentPlayerName();
     currentPlayer.setText(text);
+  }
+
+  @FXML
+  public void setGameStatus(String text) {
+    gameStatus.setText(text);
   }
 
   @FXML
