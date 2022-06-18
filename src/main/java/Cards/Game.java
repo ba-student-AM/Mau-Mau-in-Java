@@ -252,37 +252,33 @@ final public class Game {
 		
 		/* TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement*/
 		
-		/* TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
-		 *       - add card to our putStack */
-		
 		/* TODO: - increment our current Player like in submitDraw (just copy it) */
 		
 		// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
-		if(card.getType()==Type.SIEBEN){
-			currentPlayerIndex=currentPlayerIndex +1 % players.length;
-			submitDraw();
-			submitDraw();
+		if(card.getType()==Type.SIEBEN) { 
+			
+			currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+			
 		}
 		 
 		 /* TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
 		 if(card.getType()==Type.ACHT){
-			 currentPlayerIndex = currentPlayerIndex + 2 % players.length;
+			 currentPlayerIndex = (currentPlayerIndex + 2) % players.length;
 		 }
 		
 		if (card.getType() == Type.ASS) {
 			
-			currentPlayerIndex = currentPlayerIndex - 1 % players.length; 
+			/*currentPlayerIndex = currentPlayerIndex - 1 % players.length; 
 			
 			if (currentPlayerIndex == -1) {
 				 currentPlayerIndex = players.length -1;
-			}
+			} */
 			
-			currentPlayer = players[currentPlayerIndex]; 
 		}
 		
 		// Our selectedSuit has been selected by the player 
 		if (card.getType() == Type.UNTER) {
-			declaredSuit = selectedSuit; 
+			// declaredSuit = selectedSuit; 
 		}
 	
 
