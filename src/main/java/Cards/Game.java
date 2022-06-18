@@ -249,10 +249,10 @@ final public class Game {
 		// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
 		if(card.getType()==Type.SIEBEN) { 
 			
-			/* int nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
+			int nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
 			
 			players[nextPlayerIndex].drawCardFromStack(drawStack);
-			players[nextPlayerIndex].drawCardFromStack(drawStack); */
+			players[nextPlayerIndex].drawCardFromStack(drawStack); 
 			
 		}
 		 
