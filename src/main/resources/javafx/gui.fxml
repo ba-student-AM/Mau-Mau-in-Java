@@ -130,7 +130,11 @@
                            </children>
                         </HBox>
                         <Label fx:id="gameStatus" text="\$Spielstatus" wrapText="true" />
-                        <Button fx:id="btnNextPlayer" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Karten aufdecken" />
+                        <HBox fx:id="Hbox_Buttons">
+                           <children>
+                              <Button fx:id="btnNextPlayer" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Karten aufdecken" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <Region layoutX="373.0" layoutY="10.0" HBox.hgrow="ALWAYS" />

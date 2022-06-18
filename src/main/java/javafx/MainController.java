@@ -15,13 +15,13 @@ import java.util.TimerTask;
 
 import Cards.Card;
 import Cards.Game;
+import Cards.Suit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Blend;
@@ -35,6 +35,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import static Cards.Type.UNTER;
 
 public class MainController {
   @FXML
@@ -51,6 +53,8 @@ public class MainController {
   private Button btnNextPlayer;
   @FXML
   private HBox handCards;
+  @FXML
+  private HBox Hbox_Buttons;
 
 	private GameTimer playTime;
   private Boolean covered = true;
@@ -69,6 +73,7 @@ public class MainController {
       // INIT
       initializeGame();
       startTimer();
+      System.out.println(btnNextPlayer.getId());
     } catch (Exception e) {
       //TODO: handle exception
       System.out.println("Game is not initialized yet! Start a new game!");
@@ -79,7 +84,7 @@ public class MainController {
   private void initializeGame () throws FileNotFoundException {
 		Game.startGame();
 		putStack.setImage(new Image(new FileInputStream(Game.getDeclaredCard().getImagePath())));
-
+    createNextPlayerButton();
     setCurrentPlayerName();
     setGameStatus("Neues Spiel - " + Game.getCurrentPlayerName() + " beginnt!");
     coverCards();
@@ -117,7 +122,7 @@ public class MainController {
         public void handle(MouseEvent event) {
           try {
             Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
-            if (!clickedCard.matches(Game.getDeclaredCard())) {
+            if (!clickedCard.matches(Game.getDeclaredCard()) && clickedCard.getSuit() != Game.getDeclaredSuit()) {
               setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
               ColorAdjust darken = new ColorAdjust();
 
@@ -149,8 +154,7 @@ public class MainController {
                 })
               );
               timeline.play();
-            }
-            else{
+            } else{
               playCard(clickedCard);
             }
           } catch (FileNotFoundException e) {
@@ -185,8 +189,52 @@ public class MainController {
     covered = false;
   }
 
+  private void createNextPlayerButton(){
+    Hbox_Buttons.getChildren().clear();
+    btnNextPlayer = new Button();
+    btnNextPlayer.setId("btnNextPlayer");
+    btnNextPlayer.setText("Karten aufdecken");
+    btnNextPlayer.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        try {
+          handleBtnNextPlayer();
+          System.out.println("Button test");
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+    Hbox_Buttons.getChildren().add(btnNextPlayer);
+  }
+
+  private void  createColorChangeButtons(){
+    Hbox_Buttons.getChildren().clear();
+    for (Suit suit : Suit.values()) {
+      Button button = new Button();
+      button.setText(suit.toString());
+      button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          try {
+            putStack.setImage(new Image(new FileInputStream("src/main/resources/card_img/standard_blatt/" + suit + "-UNTER.png"))); //TODO: imagepath of ober of suit
+            coverCards();
+          } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+          }
+          System.out.println(suit);
+          Game.setDeclaredSuit(suit);
+          createNextPlayerButton();
+
+        }
+      });;
+      Hbox_Buttons.getChildren().add(button);
+    }
+  }
+
   private void updateSpacing() {
     if(Game.getCurrentPlayer().getHand().size() > 5) {
+               //handCard.width - imageView.width
       handCards.setSpacing((680 - 100 * Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
     }
     else handCards.setSpacing(20);
@@ -206,8 +254,12 @@ public class MainController {
 
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
-      if(Game.getDeclaredCard().matches(card)) {
+      if(Game.getDeclaredCard().matches(card) || card.getSuit() == Game.getDeclaredSuit()) {
         Game.submitCard(card);
+        if(card.getType() == UNTER){
+          createColorChangeButtons();
+          uncoverCards();
+        }
 
         // update putStack Card
         putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
@@ -215,7 +267,7 @@ public class MainController {
         // check if a player wins
         if (!Game.getCurrentPlayer().getHand().isEmpty()) {
           setGameStatus(Game.getCurrentPlayerName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
-          endTurn();
+          endTurn(card);
         } else {
           endGame();
         }
@@ -228,6 +280,14 @@ public class MainController {
     setCurrentPlayerName();
     System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
     coverCards();
+  }
+private void endTurn(Card card) throws FileNotFoundException {
+    Game.setCurrentPlayerNext();
+    setCurrentPlayerName();
+    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
+    if(card.getType() != UNTER) {
+      coverCards();
+    }
   }
 
   private void endGame() throws FileNotFoundException {
@@ -290,6 +350,7 @@ public class MainController {
   private void handleMenuTest() throws FileNotFoundException {
     //putStack.setImage(new Image("https://cataas.com/cat/says/hello%20world!"));
     Game.printStatus();
+    createColorChangeButtons();
   }
 
 

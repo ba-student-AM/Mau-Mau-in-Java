@@ -177,6 +177,9 @@ final public class Game {
 	public static Suit getDeclaredSuit() {
 		return declaredSuit;
 	}
+  public static void setDeclaredSuit(Suit suit){
+    declaredSuit = suit;
+  }
 	
 	// Method for when a player draws another Card 
 	public static void submitDraw() {
@@ -226,17 +229,6 @@ final public class Game {
 				System.out.println("ACHT");
 				break;
 
-			// TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement
-			case UNTER:
-				System.out.println("UNTER");
-
-				declaredSuit = card.getSuit();
-				declaredType = card.getType();
-			
-			
-			System.out.println("Ungültiger Spielzug, entweder gleiche Farbe" + declaredSuit + "oder gleicher Typ" + declaredType);
-				break;
-
 			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
 			default:
 				// do nothing, card has no special action
@@ -275,12 +267,7 @@ final public class Game {
 			} */
 			
 		}
-		
-		// Our selectedSuit has been selected by the player 
-		if (card.getType() == Type.UNTER) {
-			// declaredSuit = selectedSuit; 
-		}
-	
+
 
 		// TODO: pick up the right card from the currentPlayer's hand and add it to our putStack
 		// sometimes a wrong card is picked and cards are doubled.
