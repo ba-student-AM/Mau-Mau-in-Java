@@ -249,20 +249,25 @@ final public class Game {
 		// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
 		if(card.getType()==Type.SIEBEN) { 
 			
-			currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+			/* int nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
+			
+			players[nextPlayerIndex].drawCardFromStack(drawStack);
+			players[nextPlayerIndex].drawCardFromStack(drawStack); */
 			
 		}
 		 
 		 /* TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
 		 if(card.getType()==Type.ACHT){
-			 currentPlayerIndex = (currentPlayerIndex + 2) % players.length;
+			 
+			// currentPlayerIndex = (currentPlayerIndex + 2) % players.length;
+			
 		 }
 		
 		if (card.getType() == Type.ASS) {
 			
-			/*currentPlayerIndex = currentPlayerIndex - 1 % players.length; 
+			// currentPlayerIndex = (currentPlayerIndex - 1) % players.length; 
 			
-			if (currentPlayerIndex == -1) {
+			/* if (currentPlayerIndex == -1) {
 				 currentPlayerIndex = players.length -1;
 			} */
 			
