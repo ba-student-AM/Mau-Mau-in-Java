@@ -57,7 +57,7 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
-  private Boolean allowAnyCard = false; // for debug purposes
+  private Boolean allowAnyCard = true; // for debug purposes
 
 
 	// executed on scene loading
@@ -251,72 +251,66 @@ public class MainController {
       Game.playCard(card);
       setGameStatus(Game.getCurrentPlayer().getName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
 
-      switch (card.getType()) {
-        // if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
-        case SIEBEN:
-          appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
-          Game.draw2Cards();
-          break;
+      if (!Game.isGameOver()) {
+        switch (card.getType()) {
+          // if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+          case SIEBEN:
+            appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
+            Game.draw2Cards();
+            break;
+    
+          // TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
+          case ACHT:        
+            if (Game.getPrevPlayer() == Game.getNextPlayer()) {
+              appendGameStatus(" Da " + Game.getNextPlayer().getName() + " übersprungen wird, bist du nochmal dran!");
+              endTurn = false;
+            } else {
+              appendGameStatus(" " + Game.getNextPlayer().getName() + " wird übersprungen!");
+              Game.setCurrentPlayerNext();
+            }
+            break;
   
-        // TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
-        case ACHT:        
-          if (Game.getPrevPlayer() == Game.getNextPlayer()) {
-            appendGameStatus(" Da " + Game.getNextPlayer().getName() + " übersprungen wird, bist du nochmal dran!");
+          // let the player choose a color
+          // TODO: fix bugged UNTER (hand cards can be played in color picker)
+          case UNTER:
+            setGameStatus("Wähle deine gewünschte Farbe aus!");
+            createColorChangeButtons();
+            uncoverCards();
+            break;
+  
+          // let the player place another card
+          case ASS:
+            setGameStatus("Du darfst eine weitere Karte spielen!");
             endTurn = false;
-          } else {
-            appendGameStatus(" " + Game.getNextPlayer().getName() + " wird übersprungen!");
-            Game.setCurrentPlayerNext();
-          }
-          break;
+            break;
+    
+          /* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
+          default:
+            // do nothing, card has no special action
+            break;
+        }
 
-        // let the player choose a color
-        // TODO: fix bugged UNTER (hand cards can be played in color picker)
-        case UNTER:
-          setGameStatus("Wähle deine gewünschte Farbe aus!");
-          createColorChangeButtons();
+        // check if the turn is over or another card can be played
+        if (endTurn) {
+          endTurn();
+        } else {
           uncoverCards();
-          break;
-
-        // let the player place another card
-        case ASS:
-          setGameStatus("Du darfst eine weitere Karte spielen!");
-          endTurn = false;
-          break;
-  
-        /* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
-        default:
-          // do nothing, card has no special action
-          break;
+        }
+      } else {
+        endGame();
       }
 
       // update putStack Card
       putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
-
-      // check if the turn is over or another card can be played
-      if (endTurn) {
-        endTurn();
-      } else {
-        uncoverCards();
-      }
     }
   }
 
+  // end the turn and switch to the next player
   private void endTurn() throws FileNotFoundException {
-    // check if the game is over (no cards left)
-    if (Game.isGameOver()) {
-      endGame();
-    } else {
-      System.out.println("Next Player: " + Game.getNextPlayer().getName());
-      Game.setCurrentPlayerNext();
-      setCurrentPlayerName();
-      coverCards();
-    }
-  }
-
-  // end the turn of the current player and update the name
-  private void endTurn(Card card) throws FileNotFoundException {
+    System.out.println("Next Player: " + Game.getNextPlayer().getName());
     Game.setCurrentPlayerNext();
     setCurrentPlayerName();
+    coverCards();
   }
 
   // end the game and show the winner, disallow further actions
