@@ -170,7 +170,7 @@ final public class Game {
 
 	// Method to get our winner
 	public static Player getWinningPlayer() {
-
+	
 		if (currentPlayer.getHand().isEmpty()) {
 			return currentPlayer;
 		}
@@ -179,7 +179,12 @@ final public class Game {
 
 	// Method to check if our game is over
 	public static boolean isGameOver() {
-		return currentPlayer.getHand().isEmpty();
+		for (Player player: players) {
+			if (player.hasEmptyHand()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	// Getters and Setters for the declaredCard
