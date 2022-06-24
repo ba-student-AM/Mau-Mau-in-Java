@@ -63,9 +63,13 @@ final public class Game {
 		createPutStack();
 		createPlayerHands();
 
+		// initialize card stacks for game
 		putStack.addCard(drawStack.getTopCard());
-		declaredCard = getDeclaredCard();
 		drawStack.removeCardIndex(drawStack.getTopCardIndex());
+
+		// initialize declared card variables
+		declaredCard = getDeclaredCard();
+		declaredType = declaredCard.getType();
 		declaredSuit = declaredCard.getSuit();
 
 		// Randomize the current player on start
@@ -78,8 +82,11 @@ final public class Game {
     System.out.println("putStack has " + putStack.size() + " cards.");
     System.out.println("drawStack has " + drawStack.size() + " cards.");
     System.out.println("declaredCard is " + declaredCard.toString());
-    for (int i = 0; i < Game.getPlayerCount(); i++){
-      System.out.println("Player " + Game.getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
+		System.out.println("Previous player is " + getPrevPlayer().getName());
+		System.out.println("Current player is " + getCurrentPlayer().getName());
+		System.out.println("Current player is " + getNextPlayer().getName());
+    for (int i = 0; i < getPlayerCount(); i++){
+      System.out.println("Player " + getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
     }
   }
 	
@@ -122,36 +129,43 @@ final public class Game {
 		return players[currentPlayerIndex];
 	}
 
-	public static String getCurrentPlayerName() {
-		return getCurrentPlayer().getName();
-	}
-
-	public static int getCurrentPlayerIndex() {
-		return currentPlayerIndex;
-	}
-
 	public static void setCurrentPlayerIndex(int index) {
 		currentPlayerIndex = index;
 	}
 
-	// Getter for current declaredCard
-	public static Card getDeclaredCard() {
-		return putStack.getTopCard();
+	// Getters and setters for the next player
+	public static Player getNextPlayer() {
+		return players[getNextPlayerIndex()];
+	}
+
+	public static int getNextPlayerIndex() {
+		if (currentPlayerIndex + 1 >= players.length) {
+			return 0;
+		} else {
+			return currentPlayerIndex + 1;
+		}
+	}
+
+	// Getters and setters for the previous player
+	public static Player getPrevPlayer() {
+		return players[getPrevPlayerIndex()];
+	}
+
+	public static int getPrevPlayerIndex() {
+		if (currentPlayerIndex - 1 < 0) {
+			return players.length - 1;
+		} else {
+			return currentPlayerIndex - 1;
+		}
 	}
 
 	// Method to change the current player
 	public static void setCurrentPlayerNext() {
-		currentPlayerIndex++;
-		if (currentPlayerIndex >= players.length) {
-			setCurrentPlayerIndex(0);
-		}
+			setCurrentPlayerIndex(getNextPlayerIndex());
 	}
 
 	public static void setCurrentPlayerPrev() {
-		currentPlayerIndex--;
-		if (currentPlayerIndex < 0) {
-			setCurrentPlayerIndex(players.length - 1);
-		}
+		setCurrentPlayerIndex(getPrevPlayerIndex());
 	}
 
 	// Method to get our winner
@@ -164,16 +178,19 @@ final public class Game {
 	}
 
 	// Method to check if our game is over
-	public boolean isGameOver() {
-		for (Player player: players) {
-			if (player.hasEmptyHand()) {
-				return true;
-			}
-		}
-		return false;
+	public static boolean isGameOver() {
+		return currentPlayer.getHand().isEmpty();
 	}
 	
-	// Method to get declaredCard 
+	// Getters and Setters for the declaredCard
+	public static Card getDeclaredCard() {
+		return putStack.getTopCard();
+	}
+
+	public static void setDeclaredCard(Card card) {
+		declaredCard = card;
+	}
+
 	public static Suit getDeclaredSuit() {
 		return declaredSuit;
 	}
@@ -181,6 +198,10 @@ final public class Game {
     declaredSuit = suit;
   }
 	
+	public static Type getDeclaredType(){
+		return Game.declaredType;
+	}
+
 	// Method for when a player draws another Card 
 	public static void submitDraw() {
 		if (drawStack.isEmpty() && !putStack.isEmpty()) {
@@ -192,10 +213,15 @@ final public class Game {
 			declaredCard = getDeclaredCard();
 
 		}
-		
 		getCurrentPlayer().drawCardFromStack(drawStack);
-		
 		// Important: change the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
+	}
+
+	public static void playCard(Card card) {
+		getCurrentPlayer().putCardOnStack(putStack, card);
+		declaredCard = card;
+		declaredSuit = card.getSuit();
+		declaredType = card.getType();
 	}
 
   /* Method to get out current Players chosen card
@@ -203,81 +229,12 @@ final public class Game {
   public Card getPlayerChoice (int choice) {
     return getCurrentPlayer().getPlayerCard(choice);
   }
-	
-	// Method to get declaredCardType
-	public Type getDeclaredType(){
-		return Game.declaredType;
-	}
-	
-	// Method to submit our chosen card
-	public static void submitCard(Card card) {  //temporary removed 2nd parameter: Suit selectedSuit
 
-		// TODO: remove card from the currentPlayer's hand
-
-		// TODO: - from card, set our new declaredType and declaredSuit, as well as our declared Card
-		//       - add card to our putStack
-
-		switch (card.getType()) {
-
-			// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
-			case SIEBEN:
-				System.out.println("SIEBEN");
-				break;
-
-			// TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
-			case ACHT:
-				System.out.println("ACHT");
-				break;
-
-			/* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
-			default:
-				// do nothing, card has no special action
-				System.out.println("No special card action");
-				break;
+	// next player draws two cards
+	public static void draw2Cards() {
+		for (int i = 0; i < 2; i++) {
+			getNextPlayer().drawCardFromStack(drawStack);
 		}
-		
-		/* TODO: remove card from the currentPlayer's hand */
-		
-		if (currentPlayer.hasEmptyHand()) {
-			/* TODO: For our UI-Team: implement functionality top tell our player that he has won the game !!! */
-		}
-		
-		/* TODO: For our UI-Team: Implement functionality for our player to select and set a new selectedSuit if his Card is of type UNTER in the GUI departement*/
-		
-		/* TODO: - increment our current Player like in submitDraw (just copy it) */
-		
-		// TODO: - if card is of type SIEBEN, let our (new) currentPlayer draw two Cards 
-		if(card.getType()==Type.SIEBEN) { 
-			
-			int nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
-			
-			players[nextPlayerIndex].drawCardFromStack(drawStack);
-			players[nextPlayerIndex].drawCardFromStack(drawStack); 
-			
-		}
-		 
-		 /* TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped) */
-		 if(card.getType()==Type.ACHT){
-			 
-			// currentPlayerIndex = (currentPlayerIndex + 2) % players.length;
-			
-		 }
-		
-		if (card.getType() == Type.ASS) {
-			
-			// currentPlayerIndex = (currentPlayerIndex - 1) % players.length; 
-			
-			/* if (currentPlayerIndex == -1) {
-				 currentPlayerIndex = players.length -1;
-			} */
-			
-		}
-
-
-		// TODO: pick up the right card from the currentPlayer's hand and add it to our putStack
-		// sometimes a wrong card is picked and cards are doubled.
-		getCurrentPlayer().putCardOnStack(putStack, card);
-		declaredCard = card;
 	}
 }
 

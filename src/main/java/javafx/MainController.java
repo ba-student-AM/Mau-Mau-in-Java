@@ -16,6 +16,7 @@ import java.util.TimerTask;
 import Cards.Card;
 import Cards.Game;
 import Cards.Suit;
+import Cards.Type;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -35,8 +36,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import static Cards.Type.UNTER;
 
 public class MainController {
   @FXML
@@ -58,22 +57,16 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
+  private Boolean allowAnyCard = false; // for debug purposes
 
 
 	// executed on scene loading
   public void initialize() throws FileNotFoundException {
     try {
-      // DEBUG
-      System.out.println("PlayerCount (Controller: Main): " + Game.getPlayerCount());
-      System.out.println("PlayerNames (Controller: Main): " + Game.getPlayerNames());
-      for (String string : Game.getPlayerNames()) {
-        System.out.println(string);
-      }
-
-      // INIT
+      // INIT GAME
       initializeGame();
       startTimer();
-      System.out.println(btnNextPlayer.getId());
+      // System.out.println(btnNextPlayer.getId());
     } catch (Exception e) {
       //TODO: handle exception
       System.out.println("Game is not initialized yet! Start a new game!");
@@ -86,7 +79,7 @@ public class MainController {
 		putStack.setImage(new Image(new FileInputStream(Game.getDeclaredCard().getImagePath())));
     createNextPlayerButton();
     setCurrentPlayerName();
-    setGameStatus("Neues Spiel - " + Game.getCurrentPlayerName() + " beginnt!");
+    setGameStatus("Neues Spiel - " + Game.getCurrentPlayer().getName() + " beginnt!");
     coverCards();
   }
 
@@ -122,7 +115,9 @@ public class MainController {
         public void handle(MouseEvent event) {
           try {
             Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
-            if (!clickedCard.matches(Game.getDeclaredCard()) && clickedCard.getSuit() != Game.getDeclaredSuit()) {
+
+            // check if card can be played
+            if (!allowAnyCard && (clickedCard.getType() != Game.getDeclaredType() && clickedCard.getSuit() != Game.getDeclaredSuit())) {
               setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
               ColorAdjust darken = new ColorAdjust();
 
@@ -208,7 +203,7 @@ public class MainController {
     Hbox_Buttons.getChildren().add(btnNextPlayer);
   }
 
-  private void  createColorChangeButtons(){
+  private void createColorChangeButtons(){
     Hbox_Buttons.getChildren().clear();
     for (Suit suit : Suit.values()) {
       Button button = new Button();
@@ -225,7 +220,6 @@ public class MainController {
           System.out.println(suit);
           Game.setDeclaredSuit(suit);
           createNextPlayerButton();
-
         }
       });;
       Hbox_Buttons.getChildren().add(button);
@@ -239,14 +233,13 @@ public class MainController {
     }
     else handCards.setSpacing(20);
   }
+
   @FXML
   private void drawCard() throws FileNotFoundException {
-
     // TODO: Fix the exception when the drawStack and the putStack are empty at the same time
-
     if(!covered) {
       Game.submitDraw();
-      setGameStatus(Game.getCurrentPlayerName() + " hat eine Karte vom Stapel gezogen!");
+      setGameStatus(Game.getCurrentPlayer().getName() + " hat eine Karte vom Stapel gezogen!");
 
       endTurn();
     }
@@ -254,44 +247,81 @@ public class MainController {
 
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
-      if(Game.getDeclaredCard().matches(card) || card.getSuit() == Game.getDeclaredSuit()) {
-        Game.submitCard(card);
-        if(card.getType() == UNTER){
+      Boolean endTurn = true;
+      Game.playCard(card);
+      setGameStatus(Game.getCurrentPlayer().getName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
+
+      switch (card.getType()) {
+        // if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+        case SIEBEN:
+          appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
+          Game.draw2Cards();
+          break;
+  
+        // TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
+        case ACHT:        
+          if (Game.getPrevPlayer() == Game.getNextPlayer()) {
+            appendGameStatus(" Da " + Game.getNextPlayer().getName() + " übersprungen wird, bist du nochmal dran!");
+            endTurn = false;
+          } else {
+            appendGameStatus(" " + Game.getNextPlayer().getName() + " wird übersprungen!");
+            Game.setCurrentPlayerNext();
+          }
+          break;
+
+        // let the player choose a color
+        // TODO: fix bugged UNTER (hand cards can be played in color picker)
+        case UNTER:
+          setGameStatus("Wähle deine gewünschte Farbe aus!");
           createColorChangeButtons();
           uncoverCards();
-        }
+          break;
 
-        // update putStack Card
-        putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
+        // let the player place another card
+        case ASS:
+          setGameStatus("Du darfst eine weitere Karte spielen!");
+          endTurn = false;
+          break;
+  
+        /* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
+        default:
+          // do nothing, card has no special action
+          break;
+      }
 
-        // check if a player wins
-        if (!Game.getCurrentPlayer().getHand().isEmpty()) {
-          setGameStatus(Game.getCurrentPlayerName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
-          endTurn(card);
-        } else {
-          endGame();
-        }
+      // update putStack Card
+      putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
+
+      // check if the turn is over or another card can be played
+      if (endTurn) {
+        endTurn();
+      } else {
+        uncoverCards();
       }
     }
   }
 
   private void endTurn() throws FileNotFoundException {
-    Game.setCurrentPlayerNext();
-    setCurrentPlayerName();
-    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
-    coverCards();
-  }
-private void endTurn(Card card) throws FileNotFoundException {
-    Game.setCurrentPlayerNext();
-    setCurrentPlayerName();
-    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
-    if(card.getType() != UNTER) {
+    // check if the game is over (no cards left)
+    if (Game.isGameOver()) {
+      endGame();
+    } else {
+      System.out.println("Next Player: " + Game.getNextPlayer().getName());
+      Game.setCurrentPlayerNext();
+      setCurrentPlayerName();
       coverCards();
     }
   }
 
+  // end the turn of the current player and update the name
+  private void endTurn(Card card) throws FileNotFoundException {
+    Game.setCurrentPlayerNext();
+    setCurrentPlayerName();
+  }
+
+  // end the game and show the winner, disallow further actions
   private void endGame() throws FileNotFoundException {
-    setGameStatus(Game.getCurrentPlayerName() + " hat gewonnen!");
+    setGameStatus(Game.getCurrentPlayer().getName() + " hat gewonnen!");
     // TODO: Tell the user that the game is over in the GUI
     coverCards();
     drawStack.disableProperty().set(true);
@@ -337,7 +367,7 @@ private void endTurn(Card card) throws FileNotFoundException {
 
   @FXML
   public void setCurrentPlayerName() {
-    String text = Game.getCurrentPlayerName();
+    String text = Game.getCurrentPlayer().getName();
     currentPlayer.setText(text);
   }
 
@@ -347,10 +377,16 @@ private void endTurn(Card card) throws FileNotFoundException {
   }
 
   @FXML
+  public void appendGameStatus(String text) {
+    String statusBefore = gameStatus.getText();
+    gameStatus.setText(statusBefore + text);
+  }
+
+  @FXML
   private void handleMenuTest() throws FileNotFoundException {
     //putStack.setImage(new Image("https://cataas.com/cat/says/hello%20world!"));
     Game.printStatus();
-    createColorChangeButtons();
+    // createColorChangeButtons();
   }
 
 
