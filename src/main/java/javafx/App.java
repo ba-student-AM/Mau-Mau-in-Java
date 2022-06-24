@@ -1,8 +1,6 @@
 /**
  * @author Tobias Hering
- * @version 0.1.0
- * @comment Initialize JavaFX for the main scene
- * 
+ * @comment Initialize JavaFX
  * @documentation https://openjfx.io/
  */
 

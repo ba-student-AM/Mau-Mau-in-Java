@@ -1,7 +1,6 @@
 /**
  * @author Tobias Hering
- * @version 0.0.2
- * @comment JavaFX-Controllers for the main scene
+ * @comment JavaFX-Controller for the main scene
  * @documentation https://openjfx.io/
  */
 

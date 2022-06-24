@@ -1,7 +1,7 @@
 /**
  * @author John Kühnel
  * @author Tobias Hering
- * @comment Class to model the game
+ * @comment JavaFX Controller for the NewGame Scene
  * @documentation https://openjfx.io/
  */
 //TODO spielername müssen mindesanzahl an zeichen haben
