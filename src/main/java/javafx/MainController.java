@@ -57,7 +57,7 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
-  private Boolean allowAnyCard = true; // for debug purposes
+  private Boolean allowAnyCard = false; // for debug purposes
 
 
 	// executed on scene loading
