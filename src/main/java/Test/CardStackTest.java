@@ -6,7 +6,7 @@ public class CardStackTest {
 
 	public static void main(String[] args) {
 		
-		/*CardStack testStack = new CardStack();
+		CardStack testStack = new CardStack();
 		CardStack secondStack = new CardStack(); 
 		testStack = CardStack.initDeck();
 		testStack.shuffle();
@@ -20,7 +20,7 @@ public class CardStackTest {
 		System.out.println(secondStack.toString());
 		System.out.println("Dies ist die größe von secondStack: " + secondStack.size());
 		
-		System.out.println(secondStack.drawNthCard(5).toString());*/
+		System.out.println(secondStack.drawNthCard(5).toString());
 		 
 		
 		String[] players = {"abc", "def"};
