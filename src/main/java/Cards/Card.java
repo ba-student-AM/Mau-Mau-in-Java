@@ -46,6 +46,9 @@ public class Card {
 	public String toString() {
 		return suit + "-" + type;
 	}
+  public String toTransString() {
+		return suit.getTranslation() + "-" + type.getTranslation();
+	}
 	
 	// check if one Card matches another 
 	public boolean matches(Card othercard) {

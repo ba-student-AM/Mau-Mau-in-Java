@@ -1,5 +1,7 @@
 package Cards;
 
+import java.util.HashMap;
+
 /**
  * @author Arved Meyer
  * @author Tobias Hering
@@ -26,5 +28,17 @@ public enum Type {
 	public static Type getType(int index) {
 		return Type.TYPES[index]; 
 	}
+  public String getTranslation(){
+    HashMap<String, String> hashmap = new HashMap<>();
+    hashmap.put("SIEBEN", "SIEBEN");
+    hashmap.put("ACHT", "ACHT");
+    hashmap.put("NEUN", "NEUN");
+    hashmap.put("ZEHN", "ZEHN");
+    hashmap.put("ASS", "ASS");
+    hashmap.put("OBER", "DAME");
+    hashmap.put("KOENIG", "KÖNIG");
+    hashmap.put("UNTER", "BUBE");
+    return hashmap.get(this.name());
+  }
 
 }

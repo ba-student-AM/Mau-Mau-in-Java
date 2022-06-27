@@ -1,5 +1,8 @@
 package Cards;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Arved Meyer
  * @author Tobias Hering
@@ -23,4 +26,13 @@ public enum Suit {
 	public static Suit getType(int index) {
 		return Suit.SUITS[index]; 
 	}
+
+  public String getTranslation(){
+    HashMap<String, String> hashmap = new HashMap<>();
+    hashmap.put("HERZEN", "HERZ");
+    hashmap.put("SCHELLEN", "KARO");
+    hashmap.put("BLAETTER", "PIK");
+    hashmap.put("EICHELN", "KREUZ");
+    return hashmap.get(this.name());
+  }
 }

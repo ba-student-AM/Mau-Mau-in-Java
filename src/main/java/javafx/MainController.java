@@ -206,21 +206,23 @@ public class MainController {
 
   private void createColorChangeButtons(){
     Hbox_Buttons.getChildren().clear();
+    Hbox_Buttons.setSpacing(5);
     for (Suit suit : Suit.values()) {
       Button button = new Button();
-      button.setText(suit.toString());
+      button.setText(suit.getTranslation());
       button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
           try {
-            putStack.setImage(new Image(new FileInputStream("src/main/resources/card_img/standard_blatt/" + suit + "-UNTER.png"))); //TODO: imagepath of ober of suit
+            putStack.setImage(new Image(new FileInputStream("src/main/resources/card_img/standard_blatt/" + suit + "-UNTER.png")));
             coverCards();
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
-          setGameStatus(Game.getCurrentPlayer().getName() + " hat sich " + suit + " gewünscht!");
+          setGameStatus(Game.getCurrentPlayer().getName() + " hat sich " + suit.getTranslation() + " gewünscht!");
           System.out.println(suit);
           Game.setDeclaredSuit(suit);
+          handCards.setDisable(false);
           createNextPlayerButton();
         }
       });;
@@ -251,7 +253,7 @@ public class MainController {
     if(!covered) {
       Boolean endTurn = true;
       Game.playCard(card);
-      setGameStatus(Game.getCurrentPlayer().getName() + " hat die Karte " + Game.getDeclaredCard().toString() + " gespielt.");
+      setGameStatus(Game.getCurrentPlayer().getName() + " hat die Karte " + Game.getDeclaredCard().toTransString() + " gespielt.");
 
       if (!Game.isGameOver()) {
         switch (card.getType()) {
