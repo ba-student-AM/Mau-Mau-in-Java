@@ -10,10 +10,11 @@
 package javafx;
 
 import java.io.IOException;
+import java.util.Optional;
+
 import Cards.Game;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 public class NewGameController {
@@ -68,20 +69,34 @@ public class NewGameController {
       playerNames[i] = textField_P4.getText();
       i++;
     }
+    //check for duplicate names
+    for (int j = 0; j < playerCount; j++) {
+      for (int k = j + 1; k < playerCount; k++) {
+        if (playerNames[j].equals(playerNames[k])) {
+          Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+          alert.setTitle("Fehler");
+          alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler");
+          alert.getButtonTypes().setAll(new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE));
+          Optional<ButtonType> result = alert.showAndWait();
+          if (result.get() == ButtonType.OK) {
+            return;
+          }
+        }
+        else {
+          button_startGame.setDisable(true);
+          Game.addPlayers(playerNames);
 
-    button_startGame.setDisable(true);
+          // DEBUG
+          System.out.println("PlayerCount (Controller: NewGame): " + Game.getPlayerCount());
+          System.out.println("PlayerNames (Controller: NewGame): " + Game.getPlayerNames());
+          for (String string: Game.getPlayerNames()) {
+            System.out.println(string);
+          }
 
-    Game.addPlayers(playerNames);
-    Game.getPlayerCount();
-
-    // DEBUG
-    System.out.println("PlayerCount (Controller: NewGame): " + Game.getPlayerCount());
-    System.out.println("PlayerNames (Controller: NewGame): " + Game.getPlayerNames());
-    for (String string: Game.getPlayerNames()) {
-      System.out.println(string);
+          App.setRoot("gui");
+        }
+      }
     }
-
-    App.setRoot("gui");
   }
 
 

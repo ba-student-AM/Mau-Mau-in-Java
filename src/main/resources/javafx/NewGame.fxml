@@ -65,25 +65,25 @@
             <VBox>
                <children>
                   <Label text="Spieler 1" />
-                  <TextField fx:id="textField_P1" onKeyPressed="#keyPressed" />
+                  <TextField fx:id="textField_P1" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
             <VBox>
                <children>
                   <Label text="Spieler 2" />
-                  <TextField fx:id="textField_P2" onKeyPressed="#keyPressed" />
+                  <TextField fx:id="textField_P2" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
             <VBox>
                <children>
                   <Label text="Spieler 3" />
-                  <TextField fx:id="textField_P3" onKeyPressed="#keyPressed" />
+                  <TextField fx:id="textField_P3" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
             <VBox>
                <children>
                   <Label text="Spieler 4" />
-                  <TextField fx:id="textField_P4" onKeyPressed="#keyPressed" />
+                  <TextField fx:id="textField_P4" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
          </children>
