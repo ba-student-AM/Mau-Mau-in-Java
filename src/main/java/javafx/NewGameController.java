@@ -70,9 +70,11 @@ public class NewGameController {
       i++;
     }
     //check for duplicate names
+    boolean duplicate = false;
     for (int j = 0; j < playerCount; j++) {
       for (int k = j + 1; k < playerCount; k++) {
         if (playerNames[j].equals(playerNames[k])) {
+          duplicate = true;
           Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
           alert.setTitle("Fehler");
           alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler");
@@ -82,20 +84,12 @@ public class NewGameController {
             return;
           }
         }
-        else {
-          button_startGame.setDisable(true);
-          Game.addPlayers(playerNames);
-
-          // DEBUG
-          System.out.println("PlayerCount (Controller: NewGame): " + Game.getPlayerCount());
-          System.out.println("PlayerNames (Controller: NewGame): " + Game.getPlayerNames());
-          for (String string: Game.getPlayerNames()) {
-            System.out.println(string);
-          }
-
-          App.setRoot("gui");
-        }
       }
+    }
+    if (!duplicate) {
+      button_startGame.setDisable(true);
+      Game.addPlayers(playerNames);
+      App.setRoot("gui");
     }
   }
 
