@@ -75,14 +75,6 @@ public class NewGameController {
       for (int k = j + 1; k < playerCount; k++) {
         if (playerNames[j].equals(playerNames[k])) {
           duplicate = true;
-          Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-          alert.setTitle("Fehler");
-          alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler");
-          alert.getButtonTypes().setAll(new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE));
-          Optional<ButtonType> result = alert.showAndWait();
-          if (result.get() == ButtonType.OK) {
-            return;
-          }
         }
       }
     }
@@ -90,6 +82,13 @@ public class NewGameController {
       button_startGame.setDisable(true);
       Game.addPlayers(playerNames);
       App.setRoot("gui");
+    }
+    else{
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Fehler");
+      alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler");
+      alert.getButtonTypes().setAll(new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE));
+      Optional<ButtonType> result = alert.showAndWait();
     }
   }
 
