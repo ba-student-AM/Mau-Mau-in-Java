@@ -9,6 +9,7 @@ package javafx;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,7 +23,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
@@ -352,11 +355,19 @@ public class MainController {
   // handle Buttons in the scene
   @FXML
   private void handleNewGame() throws IOException {
+    //add a window to ask the user if he really wants to start a new game
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Neues Spiel");
+    alert.setHeaderText("Willst du ein neues Spiel starten?");
+    alert.setContentText("Das aktuelle Spiel wird beendet und ein neues Spiel gestartet.");
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      if (playTime != null) {
+        playTime.pause();
+      }
+      App.setRoot("NewGame");
+    }
     // TODO: if running: ask if you want to start a new game / save the current game
-		if (playTime != null) {
-			playTime.pause();
-		}
-		App.setRoot("NewGame");
   }
 
   @FXML

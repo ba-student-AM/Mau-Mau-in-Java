@@ -90,7 +90,6 @@
       </FlowPane>
       <FlowPane alignment="CENTER" hgap="20.0">
          <children>
-            <Button fx:id="button_abortGame" accessibleText="asdf" cancelButton="true" mnemonicParsing="false" onAction="#abort" text="Abbrechen" />
             <Button fx:id="button_startGame" accessibleText="asdf" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#submit" text="Spiel starten!" />
          </children>
       </FlowPane>
