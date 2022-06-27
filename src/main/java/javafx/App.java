@@ -22,7 +22,7 @@ public class App extends Application {
   private static Scene scene;
   private String stage_name = "Java MauMau";
   // private String icon_path = "";
-  private String default_scene = "gui";
+  private String default_scene = "startScreen";
   private boolean window_resize = true;
 
   @Override
