@@ -36,6 +36,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import static Cards.Type.UNTER;
+
 public class MainController {
   @FXML
   private ImageView putStack;
@@ -216,6 +218,7 @@ public class MainController {
           } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
           }
+          setGameStatus(Game.getCurrentPlayer().getName() + " hat sich " + suit + " gewünscht!");
           System.out.println(suit);
           Game.setDeclaredSuit(suit);
           createNextPlayerButton();
@@ -291,7 +294,7 @@ public class MainController {
 
         // check if the turn is over or another card can be played
         if (endTurn) {
-          endTurn();
+          endTurn(card);
         } else {
           uncoverCards();
         }
@@ -310,6 +313,17 @@ public class MainController {
     Game.setCurrentPlayerNext();
     setCurrentPlayerName();
     coverCards();
+  }
+  private void endTurn(Card card) throws FileNotFoundException {
+    Game.setCurrentPlayerNext();
+    setCurrentPlayerName();
+    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
+    if(card.getType() != UNTER) {
+      coverCards();
+    }
+    if(card.getType()== UNTER) {
+      handCards.disableProperty().set(true);
+    }
   }
 
   // end the game and show the winner, disallow further actions
