@@ -64,7 +64,7 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
-  private Boolean allowAnyCard = false; // for debug purposes
+  private Boolean allowAnyCard = true; // for debug purposes
 
 
 	// executed on scene loading
@@ -73,14 +73,14 @@ public class MainController {
       // INIT GAME
       initializeGame();
       startTimer();
-      // System.out.println(btnNextPlayer.getId());
     } catch (Exception e) {
-      //TODO: handle exception
+      // Game not initialized
       System.out.println("Game is not initialized yet! Start a new game!");
       setGameStatus("Das Spiel wurde noch nicht initialisiert!");
     }
   }
 
+  // initialize game
   private void initializeGame () throws FileNotFoundException {
 		Game.startGame();
 		putStack.setImage(new Image(new FileInputStream(Game.getDeclaredCard().getImagePath())));
@@ -90,6 +90,7 @@ public class MainController {
     coverCards();
   }
 
+  // check the count of the playerHand and display cards in ImageViews
   private void coverCards() throws FileNotFoundException {
     drawStack.setCursor(Cursor.DEFAULT);
     btnNextPlayer.setDisable(false);
@@ -105,6 +106,7 @@ public class MainController {
     }
       updateSpacing();  }
 
+  // add click event to the player cards and check if the selected card can be played
   private void uncoverCards() throws FileNotFoundException {
     drawStack.setCursor(Cursor.HAND);
     btnNextPlayer.setDisable(true);
@@ -165,6 +167,8 @@ public class MainController {
           event.consume();
         }
       });
+
+      // scale the hovered card to make the selection visible
       imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -175,6 +179,8 @@ public class MainController {
           event.consume();
         }
       });
+
+      // reset the scale when not hovered
       imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -191,6 +197,7 @@ public class MainController {
     covered = false;
   }
 
+  // create the button to switch to the next player when turn is over
   private void createNextPlayerButton(){
     Hbox_Buttons.getChildren().clear();
     btnNextPlayer = new Button();
@@ -210,6 +217,7 @@ public class MainController {
     Hbox_Buttons.getChildren().add(btnNextPlayer);
   }
 
+  // create a button to select a suit when UNTER is played
   private void createColorChangeButtons(){
     Hbox_Buttons.getChildren().clear();
     Hbox_Buttons.setSpacing(5);
@@ -236,6 +244,7 @@ public class MainController {
     }
   }
 
+  // create button for the winner to claim his "price" :)
   private void createWinnerButton() {
     Hbox_Buttons.getChildren().clear();
     Button button = new Button();
@@ -258,14 +267,16 @@ public class MainController {
     Hbox_Buttons.getChildren().add(button);
   }
 
+  // update the spacing of the handCards when there are too much cards
   private void updateSpacing() {
     if(Game.getCurrentPlayer().getHand().size() > 5) {
-               //handCard.width - imageView.width
+      // handCard.width - imageView.width
       handCards.setSpacing((680 - 100 * Game.getCurrentPlayer().getHand().size()) / (Game.getCurrentPlayer().getHand().size() - 1));
     }
     else handCards.setSpacing(20);
   }
 
+  // draw a card from the drawStack and add it to the current player's hand
   @FXML
   private void drawCard() throws FileNotFoundException {
     // TODO: Fix the exception when the drawStack and the putStack are empty at the same time
@@ -277,6 +288,8 @@ public class MainController {
     }
   }
 
+  // check if the selected card is a special card and if so, handle it
+  // check if the game is over
   private void playCard(Card card) throws FileNotFoundException {
     if(!covered) {
       Boolean endTurn = true;
@@ -285,13 +298,13 @@ public class MainController {
 
       if (!Game.isGameOver()) {
         switch (card.getType()) {
-          // if card is of type SIEBEN, let our (new) currentPlayer draw two Cards
+          // SIEBEN - let our (new) currentPlayer draw two Cards
           case SIEBEN:
             appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
             Game.draw2Cards();
             break;
     
-          // TODO: - if card is of type ACHT, increment our currentPlayer again (the next Player is skipped)
+          // ACHT - increment our currentPlayer again (the next Player is skipped)
           case ACHT:        
             if (Game.getPrevPlayer() == Game.getNextPlayer()) {
               appendGameStatus(" Da " + Game.getNextPlayer().getName() + " übersprungen wird, bist du nochmal dran!");
@@ -302,21 +315,19 @@ public class MainController {
             }
             break;
   
-          // let the player choose a color
-          // TODO: fix bugged UNTER (hand cards can be played in color picker)
+          // UNTER - let the player choose a color
           case UNTER:
             setGameStatus("Wähle deine gewünschte Farbe aus!");
             createColorChangeButtons();
             uncoverCards();
             break;
   
-          // let the player place another card
+          // ASS - let the player place another card
           case ASS:
             setGameStatus("Du darfst eine weitere Karte spielen!");
             endTurn = false;
             break;
     
-          /* TODO: For our UI-Team: implement functionality to tell the player whether his card's Suit or Type are invalid*/
           default:
             // do nothing, card has no special action
             break;
@@ -332,7 +343,7 @@ public class MainController {
         endGame();
       }
 
-      // update putStack Card
+      // update putStack Card Image
       putStack.setImage(new Image(new FileInputStream(card.getImagePath())));
     }
   }
@@ -344,6 +355,7 @@ public class MainController {
     setCurrentPlayerName();
     coverCards();
   }
+
   private void endTurn(Card card) throws FileNotFoundException {
     Game.setCurrentPlayerNext();
     setCurrentPlayerName();
@@ -381,7 +393,6 @@ public class MainController {
   // handle Buttons in the scene
   @FXML
   private void handleNewGame() throws IOException {
-    //add a window to ask the user if he really wants to start a new game
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("Neues Spiel");
     alert.setHeaderText("Willst du ein neues Spiel starten?");
@@ -435,7 +446,7 @@ public class MainController {
     // createColorChangeButtons();
   }
 
-
+  // Game timer
   private class GameTimer extends TimerTask {
 
 		private byte seconds = 0;
