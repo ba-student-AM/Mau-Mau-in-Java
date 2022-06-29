@@ -89,11 +89,10 @@
                   </Menu>
                </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Hilfe / Über / ...">
-          <items>
-            <MenuItem fx:id="menuAbout" disable="true" mnemonicParsing="false" text="Über das Programm" />
-                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test..." />
-          </items>
+        <Menu mnemonicParsing="false" text="Test">
+               <items>
+                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test" />
+               </items>
         </Menu>
       </menus>
     </MenuBar>
