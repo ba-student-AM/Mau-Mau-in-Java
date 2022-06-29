@@ -208,7 +208,6 @@ public class MainController {
       public void handle(MouseEvent event) {
         try {
           handleBtnNextPlayer();
-          System.out.println("Button test");
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
@@ -350,7 +349,6 @@ public class MainController {
 
   // end the turn and switch to the next player
   private void endTurn() throws FileNotFoundException {
-    System.out.println("Next Player: " + Game.getNextPlayer().getName());
     Game.setCurrentPlayerNext();
     setCurrentPlayerName();
     coverCards();
@@ -359,7 +357,6 @@ public class MainController {
   private void endTurn(Card card) throws FileNotFoundException {
     Game.setCurrentPlayerNext();
     setCurrentPlayerName();
-    System.out.println("Next Player: " + Game.getCurrentPlayer().getName());
     if(card.getType() != UNTER) {
       coverCards();
     }
