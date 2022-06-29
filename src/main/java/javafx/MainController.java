@@ -64,7 +64,7 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
-  private Boolean allowAnyCard = true; // for debug purposes
+  private Boolean allowAnyCard = false; // for debug purposes
 
 
 	// executed on scene loading
@@ -375,7 +375,6 @@ public class MainController {
     coverCards();
     drawStack.disableProperty().set(true);
     btnNextPlayer.disableProperty().set(true);
-    playTime.stop();
     createWinnerButton();
   }
 
@@ -399,9 +398,6 @@ public class MainController {
     alert.setContentText("Das aktuelle Spiel wird beendet und ein neues Spiel gestartet.");
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      if (playTime != null) {
-        playTime.pause();
-      }
       App.setRoot("NewGame");
     }
     // TODO: if running: ask if you want to start a new game / save the current game
@@ -464,35 +460,6 @@ public class MainController {
         task = new GameTimer();
         timer.scheduleAtFixedRate(task, 0, 1000);
         isRunning = true;
-      }
-    }
-
-    // restart the timer
-    private void restart() {
-      stop();
-      start();
-    }
-
-    // pause the timer
-    private void pause() {
-			// TODO: properly pause the timer
-      clear();
-    }
-
-    // stop the timer
-    private void stop() {
-      clear();
-      seconds = 0;
-      minutes = 0;
-      hours = 0;
-    }
-
-    // clear an existing timer
-    private void clear() {
-      if (isRunning) {
-        timer.cancel();
-        timer.purge();
-        isRunning = false;
       }
     }
 
