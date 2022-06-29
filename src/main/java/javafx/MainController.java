@@ -21,6 +21,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -35,6 +36,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -58,6 +60,8 @@ public class MainController {
   private HBox handCards;
   @FXML
   private HBox Hbox_Buttons;
+  @FXML
+  private VBox Vbox_gameScreen;
 
 	private GameTimer playTime;
   private Boolean covered = true;
@@ -233,6 +237,25 @@ public class MainController {
     }
   }
 
+  private void createWinnerButton() {
+    Hbox_Buttons.getChildren().clear();
+    Button button = new Button();
+    button.setText("Preis abholen :)");
+    button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        Vbox_gameScreen.getChildren().clear();
+        Vbox_gameScreen.autosize();
+        ImageView img = new ImageView(new Image("https://cataas.com/cat/says/Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "!"));
+        img.setPreserveRatio(true);
+        img.setFitHeight(400);
+        Vbox_gameScreen.setAlignment(Pos.CENTER);
+        Vbox_gameScreen.getChildren().add(img);
+      }
+  });
+    Hbox_Buttons.getChildren().add(button);
+  }
+
   private void updateSpacing() {
     if(Game.getCurrentPlayer().getHand().size() > 5) {
                //handCard.width - imageView.width
@@ -339,6 +362,7 @@ public class MainController {
     drawStack.disableProperty().set(true);
     btnNextPlayer.disableProperty().set(true);
     playTime.stop();
+    createWinnerButton();
   }
 
   private void startTimer() {

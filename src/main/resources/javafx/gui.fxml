@@ -97,7 +97,7 @@
         </Menu>
       </menus>
     </MenuBar>
-      <VBox>
+      <VBox fx:id="Vbox_gameScreen">
          <children>
             <HBox>
                <children>
