@@ -16,7 +16,6 @@ import java.util.TimerTask;
 import Cards.Card;
 import Cards.Game;
 import Cards.Suit;
-import Cards.Type;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -244,9 +243,12 @@ public class MainController {
     button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
+        String url = "https://cataas.com/cat/says/";
+        String params = "Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "!";
+
         Vbox_gameScreen.getChildren().clear();
         Vbox_gameScreen.autosize();
-        ImageView img = new ImageView(new Image("https://cataas.com/cat/says/Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "!"));
+        ImageView img = new ImageView(new Image(url + params));
         img.setPreserveRatio(true);
         img.setFitHeight(400);
         Vbox_gameScreen.setAlignment(Pos.CENTER);
