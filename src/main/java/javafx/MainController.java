@@ -1,5 +1,7 @@
 /**
  * @author Tobias Hering
+ * @author John Kühnel
+ * @version 0.1.0
  * @comment JavaFX-Controller for the main scene
  * @documentation https://openjfx.io/
  */
@@ -64,7 +66,6 @@ public class MainController {
 
 	private GameTimer playTime;
   private Boolean covered = true;
-  private Boolean allowAnyCard = false; // for debug purposes
 
 
 	// executed on scene loading
@@ -126,7 +127,7 @@ public class MainController {
             Card clickedCard = Game.getCurrentPlayer().getHand().drawNthCard(finalI);
 
             // check if card can be played
-            if (!allowAnyCard && (clickedCard.getType() != Game.getDeclaredType() && clickedCard.getSuit() != Game.getDeclaredSuit())) {
+            if (!Game.allowAnyCard && (clickedCard.getType() != Game.getDeclaredType() && clickedCard.getSuit() != Game.getDeclaredSuit())) {
               setGameStatus("Wähle eine passende Karte, oder ziehe eine neue Karte vom Stapel!");
               ColorAdjust darken = new ColorAdjust();
 
@@ -280,9 +281,13 @@ public class MainController {
   private void drawCard() throws FileNotFoundException {
     // TODO: Fix the exception when the drawStack and the putStack are empty at the same time
     if(!covered) {
-      Game.submitDraw();
-      setGameStatus(Game.getCurrentPlayer().getName() + " hat eine Karte vom Stapel gezogen!");
-
+      Boolean drawn = Game.submitDraw();
+      if (drawn == true) {
+        setGameStatus(Game.getCurrentPlayer().getName() + " hat eine Karte vom Stapel gezogen!");
+      } else {
+        setGameStatus(Game.getCurrentPlayer().getName() + " konnte keine Karte ziehen, da der Stapel leer ist!");
+      }
+      
       endTurn();
     }
   }
@@ -299,8 +304,19 @@ public class MainController {
         switch (card.getType()) {
           // SIEBEN - let our (new) currentPlayer draw two Cards
           case SIEBEN:
-            appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
-            Game.draw2Cards();
+            
+            int drawn = Game.draw2Cards();
+            switch (drawn) {
+              case 2:
+                appendGameStatus(" " + Game.getNextPlayer().getName() + " muss zwei Karten ziehen!");
+                break;
+              case 1:
+                appendGameStatus(" Glück gehabt! " + Game.getNextPlayer().getName() + " muss nur eine Karte ziehen, da der Stapel leer ist!");
+                break;
+              case 0:
+                appendGameStatus(" Glück gehabt! " + Game.getNextPlayer().getName() + " muss 2 Karten ziehen, aber der Stapel ist leer!");
+                break;
+            }
             break;
     
           // ACHT - increment our currentPlayer again (the next Player is skipped)

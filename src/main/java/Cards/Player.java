@@ -2,7 +2,9 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.3.0
+ * @author John Kühnel
+ * @author Tobias Hering
+ * @version 0.4.0
  * @comment Class to model a player in the game
  */
 
@@ -41,15 +43,20 @@ public class Player {
     }
 
     // Method to draw a Card from a specified stack
-    public void drawCardFromStack(CardStack stack) {
+    // return if a card could be drawn or not
+    public boolean drawCardFromStack(CardStack stack) {
+      if (stack.size() > 0) {
         int index = stack.getTopCardIndex();
         this.hand.addCard(stack.drawNthCard(index));
         stack.removeCardIndex(index);
+        return true;
+      }
+      return false;
     }
     
     public void putCardOnStack(CardStack stack, Card card) {
       this.hand.removeCard(card);
-        stack.addCard(card);
+      stack.addCard(card);
     }
 
     // Method to test if a player has a matching card 
