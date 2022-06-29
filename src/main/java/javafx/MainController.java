@@ -253,7 +253,7 @@ public class MainController {
       @Override
       public void handle(MouseEvent event) {
         String url = "https://cataas.com/cat/says/";
-        String params = "Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "!";
+        String params = "Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "?size=35&color=white&font=lobster";
 
         Vbox_gameScreen.getChildren().clear();
         Vbox_gameScreen.autosize();
