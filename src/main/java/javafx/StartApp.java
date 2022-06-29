@@ -1,5 +1,6 @@
 /**
  * @author Tobias Hering
+ * @version 1.0.0
  * @comment Class to start the Application - needed to execute the built Jar!
  */
 
