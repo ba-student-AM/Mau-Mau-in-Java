@@ -91,7 +91,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Test">
                <items>
-                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test" />
+                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Status" />
                </items>
         </Menu>
       </menus>
