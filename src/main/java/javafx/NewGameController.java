@@ -29,46 +29,27 @@ public class NewGameController {
   private TextField textField_P4;
   @FXML
   private Button button_startGame;
+  
   private int playerCount;
-  private int i;
-
   private String[] playerNames;
+  private int minNameLength = 2;
+  private int maxNameLength = 10;
 
   @FXML
   public void submit() throws IOException { //TODO: check for valid inputs and duplicate names, maybe add min and max nameLength
-    playerCount = 0;
-    if (!textField_P1.getText().isEmpty()) {
-      playerCount++;
-    }
-    if (!textField_P2.getText().isEmpty()) {
-      playerCount++;
-    }
-    if (!textField_P3.getText().isEmpty()) {
-      playerCount++;
-    }
-    if (!textField_P4.getText().isEmpty()) {
-      playerCount++;
-    }
-
     playerNames = new String[playerCount];
 
-    i = 0;
-    if (!textField_P1.getText().isEmpty()) {
-      playerNames[i] = textField_P1.getText();
-      i++;
+    switch (playerCount) {
+      case 4:
+        playerNames[3] = textField_P4.getText();
+      case 3:
+        playerNames[2] = textField_P3.getText();
+      case 2:
+        playerNames[1] = textField_P2.getText();
+        playerNames[0] = textField_P1.getText();
+        break;
     }
-    if (!textField_P2.getText().isEmpty()) {
-      playerNames[i] = textField_P2.getText();
-      i++;
-    }
-    if (!textField_P3.getText().isEmpty()) {
-      playerNames[i] = textField_P3.getText();
-      i++;
-    }
-    if (!textField_P4.getText().isEmpty()) {
-      playerNames[i] = textField_P4.getText();
-      i++;
-    }
+
     //check for duplicate names
     boolean duplicate = false;
     for (int j = 0; j < playerCount; j++) {
@@ -78,15 +59,23 @@ public class NewGameController {
         }
       }
     }
-    if (!duplicate) {
+
+    // check for the name length
+    boolean length = false;
+    for (String string : playerNames) {
+      if (string.length() < minNameLength || string.length() > maxNameLength) {
+        length = true;
+      }
+    }
+
+    if (!duplicate && !length) {
       button_startGame.setDisable(true);
       Game.addPlayers(playerNames);
       App.setRoot("gui");
-    }
-    else{
+    } else {
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
       alert.setTitle("Fehler");
-      alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler");
+      alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler (" + minNameLength + "-" + maxNameLength + " Zeichen)");
       alert.getButtonTypes().setAll(new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE));
       Optional<ButtonType> result = alert.showAndWait();
     }
@@ -98,26 +87,46 @@ public class NewGameController {
     App.setRoot("gui");
   }
 
-  //enable button only when >= 2 textfields are filled
+  // enable the next textfield when the previous one is filled
   @FXML
   public void keyPressed(KeyEvent event) { //TODO: change to event key-released
     playerCount = 0;
     button_startGame.setDisable(true);
     if (!textField_P1.getText().isEmpty()) {
-      playerCount++;
+      enableTextField(textField_P2);
+      playerCount = 1;
+    } else {
+      disableTextField(textField_P2);
     }
+
     if (!textField_P2.getText().isEmpty()) {
-      playerCount++;
+      enableTextField(textField_P3);
+      playerCount = 2;
+    } else {
+      disableTextField(textField_P3);
     }
+
     if (!textField_P3.getText().isEmpty()) {
-      playerCount++;
+      enableTextField(textField_P4);
+      playerCount = 3;
+    } else {
+      disableTextField(textField_P4);
     }
+
     if (!textField_P4.getText().isEmpty()) {
-      playerCount++;
+      playerCount = 4;
     }
-    if (playerCount >= 2) {
+  }
+
+  private void enableTextField(TextField field) {
+    field.setDisable(false);
+    if (playerCount >= 1) {
       button_startGame.setDisable(false);
     }
   }
 
+  private void disableTextField(TextField field) {
+    field.setDisable(true);
+    field.setText("");
+  }
 }

@@ -71,19 +71,19 @@
             <VBox>
                <children>
                   <Label text="Spieler 2" />
-                  <TextField fx:id="textField_P2" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
+                  <TextField fx:id="textField_P2" disable="true" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
             <VBox>
                <children>
                   <Label text="Spieler 3" />
-                  <TextField fx:id="textField_P3" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
+                  <TextField fx:id="textField_P3" disable="true" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
             <VBox>
                <children>
                   <Label text="Spieler 4" />
-                  <TextField fx:id="textField_P4" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
+                  <TextField fx:id="textField_P4" disable="true" onKeyPressed="#keyPressed" onKeyReleased="#keyPressed" />
                </children>
             </VBox>
          </children>
