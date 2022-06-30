@@ -49,6 +49,7 @@ public class CardStack {
 		return cards.get(cards.size() - 1);
 	}
 
+	// Method to get the top card of our stack 
 	public int getTopCardIndex() {
 		return this.size() - 1;
 	}
@@ -58,6 +59,7 @@ public class CardStack {
 		this.cards.remove(card);
 	}
 
+	// remove Card based on index 
 	public void removeCardIndex(int index) {
 		this.cards.remove(index);
 	}

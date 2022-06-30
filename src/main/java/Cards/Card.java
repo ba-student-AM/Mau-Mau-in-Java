@@ -33,10 +33,12 @@ public class Card {
 		return this.type; 
 	}
 
+	// getter method for our Blatt 
 	public String getBlatt() {
 		return blatt;
 	}
 
+	// setter-method for our Card-Blatt (for possible future expansion)
 	public void setBlatt(String blatt) {
 		this.blatt = blatt;
 	}
@@ -74,6 +76,7 @@ public class Card {
 		return Objects.equals(blatt, other.blatt) && suit == other.suit && type == other.type;
 	}
 
+	// Method to get our image path 
 	public String getImagePath() {
 		return "src/main/resources/card_img/" + this.blatt + "/" + this.suit + "-" + this.type + ".png";
 	}
