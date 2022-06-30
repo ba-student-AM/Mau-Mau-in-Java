@@ -7,11 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Arved Meyer
  * @author John Kühnel
  * @author Tobias Hering
-<<<<<<< HEAD
  * @version 1.0.0
-=======
- * @version 0.5.0
->>>>>>> branch 'main' of https://github.com/ba-student-AM/Mau-Mau-in-Java
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
