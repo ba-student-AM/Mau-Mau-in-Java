@@ -89,15 +89,14 @@
                   </Menu>
                </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Hilfe / Über / ...">
-          <items>
-            <MenuItem fx:id="menuAbout" disable="true" mnemonicParsing="false" text="Über das Programm" />
-                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test..." />
-          </items>
+        <Menu mnemonicParsing="false" text="Test">
+               <items>
+                  <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#handleMenuTest" text="Test" />
+               </items>
         </Menu>
       </menus>
     </MenuBar>
-      <VBox>
+      <VBox fx:id="Vbox_gameScreen">
          <children>
             <HBox>
                <children>
@@ -129,7 +128,7 @@
                               <Label fx:id="currentPlayer" layoutX="10.0" layoutY="10.0" text="\$Spieler" />
                            </children>
                         </HBox>
-                        <Label fx:id="gameStatus" text="\$Spielstatus" wrapText="true" />
+                        <Label fx:id="gameStatus" minHeight="40.0" text="\$Spielstatus" wrapText="true" />
                         <HBox fx:id="Hbox_Buttons">
                            <children>
                               <Button fx:id="btnNextPlayer" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleBtnNextPlayer" text="Karten aufdecken" />

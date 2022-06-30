@@ -7,13 +7,18 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Arved Meyer
  * @author John Kühnel
  * @author Tobias Hering
+<<<<<<< HEAD
  * @version 1.0.0
+=======
+ * @version 0.5.0
+>>>>>>> branch 'main' of https://github.com/ba-student-AM/Mau-Mau-in-Java
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 
 final public class Game {
 
 	public final static int NUM_INITIAL_CARDS = 5;
+	public final static Boolean allowAnyCard = false; // for debug purposes
 
 	private static int currentPlayerIndex = 0;
 	private static Player currentPlayer;
@@ -25,17 +30,6 @@ final public class Game {
 	private static CardStack drawStack;
 	private static CardStack putStack;
 
-	private static boolean isRunning;
-	
-
-	// Getter and setter for game state
-	public static boolean isRunning() {
-		return isRunning;
-	}
-
-	public static void	isRunning(Boolean state) {
-		isRunning = state;
-	}
 
 	// Method to generate instances of class Player and add them to Players
 	public static void addPlayers(String[] playerNames) {
@@ -208,18 +202,21 @@ final public class Game {
 	}
 
 	// Method for when a player draws another Card 
-	public static void submitDraw() {
-		if (drawStack.isEmpty() && !putStack.isEmpty()) {
-			putStack.moveAllCards(drawStack); //TODO: leave putStack TopCard on putStack
-			drawStack.shuffle();
-
-			putStack.addCard(drawStack.getTopCard());
-			drawStack.removeCard(drawStack.getTopCard());
-			declaredCard = getDeclaredCard();
-
+	public static Boolean submitDraw() {
+		if (drawStack.isEmpty()) {
+			putStackToDrawStack();
 		}
-		getCurrentPlayer().drawCardFromStack(drawStack);
-		// Important: change the current Player TODO: only change player if drawn card does not match declaredCard because rules say the drawn card can be played if it matches.
+		return getCurrentPlayer().drawCardFromStack(drawStack);
+	}
+
+	// move the putStack to the drawStack and leave the topCard on the putStack
+	public static void putStackToDrawStack() {
+		Card topCard = putStack.getTopCard();
+		putStack.moveAllCards(drawStack);
+		putStack.addCard(topCard);
+		drawStack.removeCard(topCard);
+
+		drawStack.shuffle();
 	}
 
 	public static void playCard(Card card) {
@@ -236,10 +233,19 @@ final public class Game {
   }
 
 	// next player draws two cards
-	public static void draw2Cards() {
-		for (int i = 0; i < 2; i++) {
-			getNextPlayer().drawCardFromStack(drawStack);
+	// return the count of cards drawn
+	public static int draw2Cards() {
+		if (drawStack.isEmpty()) {
+			putStackToDrawStack();
 		}
+		Player nextPlayer = getNextPlayer();
+		for (int i = 0; i < 2; i++) {
+			Boolean drawn = nextPlayer.drawCardFromStack(drawStack);
+			if (!drawn) {
+				return i;
+			}
+		}
+		return 2;
 	}
 }
 
