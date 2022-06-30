@@ -2,7 +2,7 @@ package Cards;
 
 /**
  * @author Arved Meyer
- * @version 0.3.0
+ * @version 1.0.0
  * @comment Class to model a player in the game
  */
 

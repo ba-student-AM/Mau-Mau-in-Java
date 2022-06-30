@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Arved Meyer
  * @author John Kühnel
  * @author Tobias Hering
- * @version 0.4.0
+ * @version 1.0.0
  * @comment Class to Model the logic of a game of Mau-Mau
  */
 

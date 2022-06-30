@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Arved Meyer
  * @author Tobias Hering
- * @version 0.2.0
+ * @version 1.0.0
  * @comment Enum to model the four Suits of Skat-Cards
  * 
  * @documentation https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
