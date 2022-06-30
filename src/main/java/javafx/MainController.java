@@ -11,6 +11,8 @@ package javafx;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -246,25 +248,38 @@ public class MainController {
 
   // create button for the winner to claim his "price" :)
   private void createWinnerButton() {
-    Hbox_Buttons.getChildren().clear();
-    Button button = new Button();
-    button.setText("Preis abholen :)");
-    button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        String url = "https://cataas.com/cat/says/";
-        String params = "Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "?size=35&color=white&font=lobster";
+    String base = "https://cataas.com/cat/says/";
+    String params = "Gl%C3%BCckwunsch%20" + Game.getCurrentPlayer().getName() + "!?size=35&color=white";
+    String url = base + params;
+    //check if url is reachable
+    try {
+      URL u = new URL(url);
+      HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+      huc.setRequestMethod("GET");
+      huc.connect();
+      if (huc.getResponseCode() == 200) {
+        Hbox_Buttons.getChildren().clear();
+        Button button = new Button();
+        button.setText("Preis abholen :)");
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            Vbox_gameScreen.getChildren().clear();
+            Vbox_gameScreen.autosize();
+            ImageView img = new ImageView(new Image(url));
+            img.setPreserveRatio(true);
+            img.setFitHeight(400);
+            Vbox_gameScreen.setAlignment(Pos.CENTER);
+            Vbox_gameScreen.getChildren().add(img);
+          }
+        });
+        Hbox_Buttons.getChildren().add(button);
 
-        Vbox_gameScreen.getChildren().clear();
-        Vbox_gameScreen.autosize();
-        ImageView img = new ImageView(new Image(url + params));
-        img.setPreserveRatio(true);
-        img.setFitHeight(400);
-        Vbox_gameScreen.setAlignment(Pos.CENTER);
-        Vbox_gameScreen.getChildren().add(img);
       }
-  });
-    Hbox_Buttons.getChildren().add(button);
+    } catch (IOException e) {
+      System.out.println("URL is not reachable");
+    }
+
   }
 
   // update the spacing of the handCards when there are too much cards
