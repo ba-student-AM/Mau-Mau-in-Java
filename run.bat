@@ -1,1 +1,1 @@
-java -jar .\target\java-maumau-0.0.2.jar
+java -jar .\target\java-maumau-0.0.3.jar
