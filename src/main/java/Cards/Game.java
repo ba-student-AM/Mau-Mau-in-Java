@@ -74,7 +74,7 @@ final public class Game {
 		System.out.println("declaredCard is " + declaredCard.toString());
 		System.out.println("Previous player is " + getPrevPlayer().getName());
 		System.out.println("Current player is " + getCurrentPlayer().getName());
-		System.out.println("Current player is " + getNextPlayer().getName());
+		System.out.println("Next player is " + getNextPlayer().getName());
 		for (int i = 0; i < getPlayerCount(); i++) {
 			System.out.println("Player " + getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
 		}
