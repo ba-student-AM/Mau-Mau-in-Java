@@ -89,7 +89,7 @@ public class NewGameController {
 
   // enable the next textfield when the previous one is filled
   @FXML
-  public void keyPressed(KeyEvent event) { //TODO: change to event key-released
+  public void keyPressed(KeyEvent event) {
     playerCount = 0;
     button_startGame.setDisable(true);
     if (!textField_P1.getText().isEmpty()) {
