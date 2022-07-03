@@ -294,7 +294,6 @@ public class MainController {
   // draw a card from the drawStack and add it to the current player's hand
   @FXML
   private void drawCard() throws FileNotFoundException {
-    // TODO: Fix the exception when the drawStack and the putStack are empty at the same time
     if(!covered) {
       Boolean drawn = Game.submitDraw();
       if (drawn == true) {
@@ -399,7 +398,6 @@ public class MainController {
   // end the game and show the winner, disallow further actions
   private void endGame() throws FileNotFoundException {
     setGameStatus(Game.getCurrentPlayer().getName() + " hat gewonnen!");
-    // TODO: Tell the user that the game is over in the GUI
     coverCards();
     drawStack.disableProperty().set(true);
     btnNextPlayer.disableProperty().set(true);
@@ -428,7 +426,6 @@ public class MainController {
     if (result.get() == ButtonType.OK) {
       App.setRoot("NewGame");
     }
-    // TODO: if running: ask if you want to start a new game / save the current game
   }
 
   @FXML

@@ -81,7 +81,8 @@ final public class Game {
   }
 	
 	// Method to give out Cards to players
-	public static void createPlayerHands() { //TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
+	public static void createPlayerHands() {
+		//TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
 		// iterate through players and add NUM_INITIAL_CARDS to their hand from drawStack
 		for (int i = 0; i < players.length; i++) {
 			for (int j = 0; j < NUM_INITIAL_CARDS; j++) {
@@ -91,7 +92,6 @@ final public class Game {
 	}
 
 	// Getters and Setters for Players and their names
-	// TODO: --> remove playerNames array and replace with Object references (redundant)
 	public static Player[] getPlayers() {
 		return players;
 	}

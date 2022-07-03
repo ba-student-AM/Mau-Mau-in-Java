@@ -4,8 +4,6 @@
  * @comment JavaFX Controller for the NewGame Scene
  * @documentation https://openjfx.io/
  */
-//TODO spielername müssen mindesanzahl an zeichen haben
-//TODO einzigaritge spielernamen -> Fehlermeldung
 
 package javafx;
 
@@ -36,7 +34,7 @@ public class NewGameController {
   private int maxNameLength = 10;
 
   @FXML
-  public void submit() throws IOException { //TODO: check for valid inputs and duplicate names, maybe add min and max nameLength
+  public void submit() throws IOException {
     playerNames = new String[playerCount];
 
     switch (playerCount) {
