@@ -65,21 +65,21 @@ final public class Game {
 		// Randomize the current player on start
 		int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, getPlayerCount());
 		setCurrentPlayerIndex(randomPlayerIndex);
-    currentPlayer = players[currentPlayerIndex];
+		currentPlayer = players[currentPlayerIndex];
 	}
 
-  public static void printStatus(){
-    System.out.println("putStack has " + putStack.size() + " cards.");
-    System.out.println("drawStack has " + drawStack.size() + " cards.");
-    System.out.println("declaredCard is " + declaredCard.toString());
+	public static void printStatus() {
+		System.out.println("putStack has " + putStack.size() + " cards.");
+		System.out.println("drawStack has " + drawStack.size() + " cards.");
+		System.out.println("declaredCard is " + declaredCard.toString());
 		System.out.println("Previous player is " + getPrevPlayer().getName());
 		System.out.println("Current player is " + getCurrentPlayer().getName());
 		System.out.println("Current player is " + getNextPlayer().getName());
-    for (int i = 0; i < getPlayerCount(); i++){
-      System.out.println("Player " + getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
-    }
-  }
-	
+		for (int i = 0; i < getPlayerCount(); i++) {
+			System.out.println("Player " + getPlayerName(players[i]) + " has " + players[i].getHand().size() + " cards.");
+		}
+	}
+
 	// Method to give out Cards to players
 	public static void createPlayerHands() {
 		//TODO: sort cards? with insertionSort or binary? also sort cards when drawing a card?
@@ -113,7 +113,7 @@ final public class Game {
 	public static int getPlayerCount() {
 		return players.length;
 	}
-	
+
 	// Getters and Setters for currentPlayer 
 	public static Player getCurrentPlayer() {
 		return players[currentPlayerIndex];
@@ -151,7 +151,7 @@ final public class Game {
 
 	// Method to change the current player
 	public static void setCurrentPlayerNext() {
-			setCurrentPlayerIndex(getNextPlayerIndex());
+		setCurrentPlayerIndex(getNextPlayerIndex());
 	}
 
 	public static void setCurrentPlayerPrev() {
@@ -160,7 +160,6 @@ final public class Game {
 
 	// Method to get our winner
 	public static Player getWinningPlayer() {
-	
 		if (currentPlayer.getHand().isEmpty()) {
 			return currentPlayer;
 		}
@@ -176,7 +175,7 @@ final public class Game {
 		}
 		return false;
 	}
-	
+
 	// Getters and Setters for the declaredCard
 	public static Card getDeclaredCard() {
 		return putStack.getTopCard();
@@ -189,11 +188,12 @@ final public class Game {
 	public static Suit getDeclaredSuit() {
 		return declaredSuit;
 	}
-  public static void setDeclaredSuit(Suit suit){
-    declaredSuit = suit;
-  }
-	
-	public static Type getDeclaredType(){
+
+	public static void setDeclaredSuit(Suit suit) {
+		declaredSuit = suit;
+	}
+
+	public static Type getDeclaredType() {
 		return Game.declaredType;
 	}
 
@@ -222,11 +222,10 @@ final public class Game {
 		declaredType = card.getType();
 	}
 
-  /* Method to get out current Players chosen card
-   * !!! This is a three levels deep-Method call for what is essentially the same functionality - Should be refactored later!!! */
-  public Card getPlayerChoice (int choice) {
-    return getCurrentPlayer().getPlayerCard(choice);
-  }
+	// Method to get out current Players chosen card
+	public Card getPlayerChoice(int choice) {
+		return getCurrentPlayer().getPlayerCard(choice);
+	}
 
 	// next player draws two cards
 	// return the count of cards drawn

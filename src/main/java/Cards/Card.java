@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 
 public class Card {
-	
+
 	// Each card has a unique combination of Suit and Type 
 	private final Suit suit;
 	private final Type type;
@@ -19,18 +19,18 @@ public class Card {
 
 	// Constructor for class Card 
 	public Card(final Suit suit, final Type type) {
-		this.suit = suit; 
-		this.type = type; 
+		this.suit = suit;
+		this.type = type;
 	}
-	
+
 	// getter-method for suit 
 	public Suit getSuit() {
 		return this.suit;
 	}
-	
+
 	// getter-method for type
 	public Type getType() {
-		return this.type; 
+		return this.type;
 	}
 
 	// getter method for our Blatt 
@@ -48,10 +48,10 @@ public class Card {
 	public String toString() {
 		return suit + "-" + type;
 	}
-  public String toTransString() {
+	public String toTransString() {
 		return suit.getTranslation() + "-" + type.getTranslation();
 	}
-	
+
 	// check if one Card matches another 
 	public boolean matches(Card othercard) {
 		return this.getSuit() == othercard.getSuit() || this.getType() == othercard.getType();

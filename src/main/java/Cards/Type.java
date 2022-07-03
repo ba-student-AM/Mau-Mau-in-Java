@@ -16,19 +16,19 @@ public enum Type {
   SIEBEN,
   ACHT,
   NEUN,
-  ZEHN, 
+  ZEHN,
   ASS,
   OBER,
   KOENIG,
   UNTER;
-	
-	/* Access all the Values of the Enum from an Array via a getter-Method
-	 * No Setter needed, as Enum-Values cannot be changed at runtime */
-	private static final Type[] TYPES = Type.values();
-	public static Type getType(int index) {
-		return Type.TYPES[index]; 
-	}
-  public String getTranslation(){
+
+  /* Access all the Values of the Enum from an Array via a getter-Method
+   * No Setter needed, as Enum-Values cannot be changed at runtime */
+  private static final Type[] TYPES = Type.values();
+  public static Type getType(int index) {
+    return Type.TYPES[index];
+  }
+  public String getTranslation() {
     HashMap<String, String> hashmap = new HashMap<>();
     hashmap.put("SIEBEN", "SIEBEN");
     hashmap.put("ACHT", "ACHT");

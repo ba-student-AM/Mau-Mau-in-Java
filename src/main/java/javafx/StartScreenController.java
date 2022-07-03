@@ -12,6 +12,6 @@ import java.io.IOException;
 public class StartScreenController {
   @FXML
   private void handleNewGame() throws IOException {
-      App.setRoot("NewGame");
+    App.setRoot("NewGame");
   }
 }
