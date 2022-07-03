@@ -237,7 +237,6 @@ public class MainController {
             throw new RuntimeException(e);
           }
           setGameStatus(Game.getCurrentPlayer().getName() + " hat sich " + suit.getTranslation() + " gewünscht!");
-          System.out.println(suit);
           Game.setDeclaredSuit(suit);
           handCards.setDisable(false);
           createNextPlayerButton();
@@ -275,7 +274,6 @@ public class MainController {
           }
         });
         Hbox_Buttons.getChildren().add(button);
-
       }
     } catch (IOException e) {
       System.out.println("URL is not reachable");
@@ -492,7 +490,6 @@ public class MainController {
     @Override
     public void run() {
       String playTime = toString();
-      // System.out.println(playTime);
       setPlayTime(playTime);
 
       seconds++;
