@@ -8,11 +8,11 @@
 package javafx;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import Cards.Game;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class NewGameController {
@@ -71,11 +71,10 @@ public class NewGameController {
       Game.addPlayers(playerNames);
       App.setRoot("gui");
     } else {
-      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-      alert.setTitle("Fehler");
-      alert.setHeaderText("Bitte verwende eindeutige Spielernamen für jeden Spieler (" + minNameLength + "-" + maxNameLength + " Zeichen)");
-      alert.getButtonTypes().setAll(new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE));
-      Optional<ButtonType> result = alert.showAndWait();
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Falsche Eingaben");
+      alert.setHeaderText("Bitte verwende eindeutige Spielernamen! (" + minNameLength + "-" + maxNameLength + " Zeichen)");
+      alert.showAndWait();
     }
   }
 
