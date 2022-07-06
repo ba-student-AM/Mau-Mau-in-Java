@@ -1,7 +1,5 @@
 package Cards;
 
-import java.util.Objects;
-
 /**
  * @author Arved Meyer
  * @author Tobias Hering
