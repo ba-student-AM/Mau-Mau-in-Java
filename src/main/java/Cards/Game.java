@@ -1,6 +1,5 @@
 package Cards;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -13,8 +12,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 final public class Game {
 
-	public final static int NUM_INITIAL_CARDS = 5;
 	public final static Boolean allowAnyCard = false; // for debug purposes
+	private final static String imageDir = "card_img/";
+	private static String blatt = "standard_blatt";		// can be changed in the future (card designs)
+	private final static int NUM_INITIAL_CARDS = 5;
 
 	private static int currentPlayerIndex = 0;
 	private static Player currentPlayer;
@@ -26,6 +27,16 @@ final public class Game {
 	private static CardStack drawStack;
 	private static CardStack putStack;
 
+
+	// getter method for our Blatt 
+	public static String getBlatt() {
+		return blatt;
+	}
+
+	// setter-method for our Card-Blatt (for possible future expansion)
+	public static void setBlatt(String newblatt) {
+		blatt = newblatt;
+	}
 
 	// Method to generate instances of class Player and add them to Players
 	public static void addPlayers(String[] playerNames) {
@@ -48,7 +59,7 @@ final public class Game {
 	}
 
 	// Method to start our game;
-	public static void startGame() throws FileNotFoundException {
+	public static void startGame() {
 		createDrawStack();
 		createPutStack();
 		createPlayerHands();
@@ -241,6 +252,11 @@ final public class Game {
 			}
 		}
 		return 2;
+	}
+
+	// getter for the image directory according to the selected blatt
+	public static String getImageDir() {
+		return "/" + imageDir + blatt + "/";
 	}
 }
 

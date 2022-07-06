@@ -15,8 +15,6 @@ public class Card {
 	private final Suit suit;
 	private final Type type;
 
-	public String blatt = "standard_blatt";
-
 	// Constructor for class Card 
 	public Card(final Suit suit, final Type type) {
 		this.suit = suit;
@@ -31,16 +29,6 @@ public class Card {
 	// getter-method for type
 	public Type getType() {
 		return this.type;
-	}
-
-	// getter method for our Blatt 
-	public String getBlatt() {
-		return blatt;
-	}
-
-	// setter-method for our Card-Blatt (for possible future expansion)
-	public void setBlatt(String blatt) {
-		this.blatt = blatt;
 	}
 
 	// return String-representation of the Card-Type
@@ -58,10 +46,10 @@ public class Card {
 	}
 
 	// Generate Hash-Code of the Card 
-	@Override
-	public int hashCode() {
-		return Objects.hash(blatt, suit, type);
-	}
+	// @Override
+	// public int hashCode() {
+	// 	return Objects.hash(blatt, suit, type);
+	// }
 
 	// check if two Cards are equal (have identical attribute values)/ are both cards
 	@Override
@@ -73,11 +61,11 @@ public class Card {
 			return false;
 		}
 		Card other = (Card) obj;
-		return Objects.equals(blatt, other.blatt) && suit == other.suit && type == other.type;
+		return suit == other.suit && type == other.type;
 	}
 
-	// Method to get our image path 
+	// Method to get our image filename 
 	public String getImagePath() {
-		return "src/main/resources/card_img/" + this.blatt + "/" + this.suit + "-" + this.type + ".png";
+		return Game.getImageDir() + this.suit + "-" + this.type + ".png";
 	}
 }
