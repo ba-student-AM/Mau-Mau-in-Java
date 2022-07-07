@@ -7,7 +7,6 @@
 
 package javafx;
 
-import java.io.IOException;
 import Cards.Game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
