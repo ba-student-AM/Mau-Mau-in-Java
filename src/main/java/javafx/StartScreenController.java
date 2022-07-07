@@ -7,11 +7,10 @@
 package javafx;
 
 import javafx.fxml.FXML;
-import java.io.IOException;
 
 public class StartScreenController {
   @FXML
-  private void handleNewGame() throws IOException {
+  private void handleNewGame() {
     App.setRoot("NewGame");
   }
 }

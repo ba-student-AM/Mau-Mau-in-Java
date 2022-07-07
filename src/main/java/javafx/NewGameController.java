@@ -34,7 +34,7 @@ public class NewGameController {
   private int maxNameLength = 10;
 
   @FXML
-  public void submit() throws IOException {
+  public void submit() {
     playerNames = new String[playerCount];
 
     switch (playerCount) {
@@ -80,7 +80,7 @@ public class NewGameController {
 
 
   @FXML
-  public void abort() throws IOException {
+  public void abort() {
     App.setRoot("gui");
   }
 
